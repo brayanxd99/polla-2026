@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// NextAuth Models
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+
+  // Polla Stats
+  totalPoints   Int       @default(0)
+  exactMatches  Int       @default(0)
+  goalDiff      Int       @default(0)
+
+  accounts      Account[]
+  sessions      Session[]
+  predictions   Prediction[]
+  r16Predictions Round16Prediction[]
+  leaguesOwned  League[]       @relation("LeagueOwner")
+  leagueMembers LeagueMember[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// Polla Models
+model Team {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique // e.g. ARG, BRA
+  flagUrl   String?
+  group     String?  // e.g. Group A
+  advancedToR16 Boolean @default(false)
+
+  homeMatches Match[] @relation("HomeTeam")
+  awayMatches Match[] @relation("AwayTeam")
+  r16Predictions Round16Prediction[]
+}
+
+model Match {
+  id          String   @id @default(cuid())
+  homeTeamId  String
+  awayTeamId  String
+  homeScore   Int?
+  awayScore   Int?
+  startTime   DateTime
+  stadium     String?
+  status      MatchStatus @default(PENDING)
+  round       String   // e.g. Group Stage, Round of 16
+
+  homeTeam    Team     @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam    Team     @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  predictions Prediction[]
+}
+
+enum MatchStatus {
+  PENDING
+  IN_PLAY
+  FINISHED
+}
+
+model Prediction {
+  id          String   @id @default(cuid())
+  userId      String
+  matchId     String
+  homeScore   Int
+  awayScore   Int
+  pointsEarned Int?    // Null before match is finished
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match       Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, matchId])
+}
+
+model Round16Prediction {
+  id          String   @id @default(cuid())
+  userId      String
+  teamId      String
+  pointsEarned Int?    // 5 if correct, null before resolved
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+}
+
+model League {
+  id          String   @id @default(cuid())
+  name        String
+  inviteCode  String   @unique
+  ownerId     String
+  isPrivate   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  owner       User     @relation("LeagueOwner", fields: [ownerId], references: [id])
+  members     LeagueMember[]
+}
+
+model LeagueMember {
+  userId      String
+  leagueId    String
+  joinedAt    DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  league      League   @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, leagueId])
+}
