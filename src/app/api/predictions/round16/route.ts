@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     // Asumiremos que pueden predecirlo hasta que los octavos estén confirmados.
 
     // Usamos una transacción para reemplazar las predicciones existentes
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // Eliminar predicciones previas de R16
       await tx.round16Prediction.deleteMany({
         where: { userId: session.user.id }
