@@ -22,8 +22,8 @@ export default async function AdminDashboard() {
     },
   })
 
-  const pendingMatches = matches.filter(m => m.status !== "FINISHED")
-  const finishedMatches = matches.filter(m => m.status === "FINISHED")
+  const pendingMatches = matches.filter((m: any) => m.status !== "FINISHED")
+  const finishedMatches = matches.filter((m: any) => m.status === "FINISHED")
 
   const teams = await prisma.team.findMany({
     orderBy: { name: 'asc' }
