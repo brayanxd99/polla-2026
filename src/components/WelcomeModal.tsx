@@ -6,40 +6,13 @@ import { Trophy, Gift, Target, Info, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function WelcomeModal() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [isOpen, setIsOpen] = useState(true)
 
-  useEffect(() => {
-    // Check if user has seen the welcome modal
-    const checkWelcomeStatus = async () => {
-      try {
-        const res = await fetch("/api/user/welcome")
-        if (res.ok) {
-          const data = await res.json()
-          if (!data.hasSeenWelcome) {
-            setIsOpen(true)
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch welcome status:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    checkWelcomeStatus()
-  }, [])
-
-  const handleDismiss = async () => {
+  const handleDismiss = () => {
     setIsOpen(false)
-    try {
-      await fetch("/api/user/welcome", { method: "POST" })
-    } catch (error) {
-      console.error("Failed to update welcome status:", error)
-    }
   }
 
-  if (loading) return null
+  // Modal content
 
   return (
     <AnimatePresence>
