@@ -25,8 +25,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Match not found" }, { status: 404 })
     }
 
-    if (match.status !== "PENDING" || new Date(match.startTime) < new Date()) {
-      return NextResponse.json({ error: "Match has already started or finished" }, { status: 400 })
+    const oneHourBeforeMatch = new Date(match.startTime.getTime() - 60 * 60 * 1000)
+
+    if (match.status !== "PENDING" || new Date() > oneHourBeforeMatch) {
+      return NextResponse.json({ error: "Match predictions closed 1 hour before kickoff" }, { status: 400 })
     }
 
     // Upsert prediction

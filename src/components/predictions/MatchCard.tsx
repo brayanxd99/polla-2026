@@ -67,7 +67,8 @@ export function MatchCard({ match, initialPrediction }: MatchCardProps) {
   }
 
   const matchDate = new Date(match.startTime)
-  const isMatchLocked = matchDate < new Date() || match.status !== "PENDING"
+  const oneHourBeforeMatch = new Date(matchDate.getTime() - 60 * 60 * 1000)
+  const isMatchLocked = new Date() > oneHourBeforeMatch || match.status !== "PENDING"
 
   return (
     <motion.div 
