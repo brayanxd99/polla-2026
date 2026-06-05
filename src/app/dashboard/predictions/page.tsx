@@ -3,6 +3,7 @@ import { MatchCard } from "@/components/predictions/MatchCard"
 import { Round16Selector } from "@/components/predictions/Round16Selector"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import { Info } from "lucide-react"
 
 export default async function PredictionsPage() {
   const session = await auth()
@@ -57,7 +58,20 @@ export default async function PredictionsPage() {
     <div className="space-y-8 max-w-4xl mx-auto pb-20">
       <div>
         <h1 className="text-3xl font-bold tracking-tight mb-2">Pronósticos</h1>
-        <p className="text-muted-foreground">Ingresa tus resultados antes de que comience cada partido y elige los 16 clasificados.</p>
+        <p className="text-muted-foreground mb-6">Ingresa tus resultados antes de que comience cada partido y elige los 16 clasificados.</p>
+        
+        {/* Recordatorio de Reglas */}
+        <div className="bg-polla-blue/10 border border-polla-blue/30 rounded-xl p-4 flex gap-3 text-sm">
+          <Info className="w-5 h-5 shrink-0 text-polla-neon mt-0.5" />
+          <div>
+            <p className="font-bold text-white mb-2">Recordatorio Rápido:</p>
+            <ul className="list-disc list-inside space-y-1 text-gray-300">
+              <li><strong>Partidos:</strong> 3 Puntos si aciertas marcador exacto. 1 Punto si solo aciertas ganador o empate.</li>
+              <li><strong>Octavos de Final:</strong> 5 Puntos por cada equipo de la cuadrícula que clasifique oficialmente.</li>
+              <li><strong>Cierre:</strong> Todo partido se bloquea automáticamente <strong className="text-polla-neon">1 hora antes</strong> de iniciar.</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
