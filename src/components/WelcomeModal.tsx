@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trophy, Gift, Target, Info, CheckCircle2 } from "lucide-react"
+import { Trophy, Gift, Target, Info, CheckCircle2, Medal, CalendarDays, ClockAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function WelcomeModal() {
@@ -58,6 +58,10 @@ export function WelcomeModal() {
                     <CheckCircle2 className="w-5 h-5 text-polla-blue shrink-0 mt-0.5" />
                     <span><strong>Octavos de Final:</strong> En la sección de predicciones encontrarás la cuadrícula de banderas. Selecciona qué equipos clasificarán a octavos para ganar 5 puntos extra por cada uno.</span>
                   </li>
+                  <li className="flex gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-polla-blue shrink-0 mt-0.5" />
+                    <span><strong>Cierre de Pronósticos:</strong> Tienes hasta <strong className="text-polla-neon">1 hora antes</strong> de que inicie cada partido para ingresar o modificar tus resultados. ¡Una vez cerrado, no podrás hacer cambios!</span>
+                  </li>
                 </ul>
               </section>
 
@@ -69,11 +73,11 @@ export function WelcomeModal() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <p className="font-medium text-white mb-1">📅 Partidos</p>
+                    <p className="font-medium text-white mb-2 flex items-center gap-2"><CalendarDays className="w-4 h-4 text-polla-blue"/> Partidos</p>
                     <p className="text-sm text-gray-400">Revisa el calendario oficial y guarda tus pronósticos antes de que empiece cada juego.</p>
                   </div>
                   <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <p className="font-medium text-white mb-1">🏆 Ranking</p>
+                    <p className="font-medium text-white mb-2 flex items-center gap-2"><Trophy className="w-4 h-4 text-polla-blue"/> Ranking</p>
                     <p className="text-sm text-gray-400">Compara tus puntos en tiempo real con otros jugadores en la tabla de posiciones.</p>
                   </div>
                 </div>
@@ -87,21 +91,21 @@ export function WelcomeModal() {
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-yellow-500/20 to-transparent border border-yellow-500/30">
-                    <span className="text-2xl">🥇</span>
+                    <Medal className="w-8 h-8 text-yellow-500" />
                     <div>
                       <p className="font-bold text-yellow-500">1er Lugar</p>
                       <p className="text-sm text-gray-300">Gran Premio Mayor (Por definir)</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-gray-400/20 to-transparent border border-gray-400/30">
-                    <span className="text-2xl">🥈</span>
+                    <Medal className="w-8 h-8 text-gray-400" />
                     <div>
                       <p className="font-bold text-gray-400">2do Lugar</p>
                       <p className="text-sm text-gray-300">Premio Especial (Por definir)</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-amber-700/20 to-transparent border border-amber-700/30">
-                    <span className="text-2xl">🥉</span>
+                    <Medal className="w-8 h-8 text-amber-600" />
                     <div>
                       <p className="font-bold text-amber-600">3er Lugar</p>
                       <p className="text-sm text-gray-300">Premio Sorpresa (Por definir)</p>
