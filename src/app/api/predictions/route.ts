@@ -31,19 +31,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Match predictions closed 1 hour before kickoff" }, { status: 400 })
     }
 
-    // Upsert prediction
-    const prediction = await prisma.prediction.upsert({
+    const existingPrediction = await prisma.prediction.findUnique({
       where: {
         userId_matchId: {
           userId: session.user.id,
           matchId: matchId,
         },
       },
-      update: {
-        homeScore,
-        awayScore,
-      },
-      create: {
+    })
+
+    if (existingPrediction) {
+      return NextResponse.json({ error: "Ya guardaste este pronóstico y no se puede modificar" }, { status: 400 })
+    }
+
+    // Create prediction (we know it doesn't exist, so we use create instead of upsert)
+    const prediction = await prisma.prediction.create({
+      data: {
         userId: session.user.id,
         matchId,
         homeScore,

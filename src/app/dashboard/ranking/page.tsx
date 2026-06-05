@@ -27,6 +27,17 @@ export default async function GlobalRankingPage() {
     }
   })
 
+  // Eliminar duplicados por nombre (para evitar que un mismo usuario con dos métodos de login salga dos veces)
+  const uniqueUsers = []
+  const seenNames = new Set()
+  for (const user of topUsers) {
+    const key = user.name || user.id
+    if (!seenNames.has(key)) {
+      seenNames.add(key)
+      uniqueUsers.push(user)
+    }
+  }
+
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-20">
       <div className="text-center mb-12">
@@ -51,7 +62,7 @@ export default async function GlobalRankingPage() {
               initial="hidden"
               animate="show"
             >
-              {topUsers.map((user, index) => {
+              {uniqueUsers.map((user, index) => {
                 const isCurrentUser = user.id === session.user?.id
                 const isTop1 = index === 0
                 const isTop2 = index === 1
@@ -92,7 +103,7 @@ export default async function GlobalRankingPage() {
                 )
               })}
               
-              {topUsers.length === 0 && (
+              {uniqueUsers.length === 0 && (
                 <tr>
                   <td colSpan={4} className="p-8 text-center text-muted-foreground">
                     Aún no hay puntos registrados en el torneo.

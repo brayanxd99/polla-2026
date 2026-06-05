@@ -20,14 +20,17 @@ export async function POST(req: Request) {
     // Opcional: Validar que el torneo no haya avanzado a una etapa donde ya no se puede predecir.
     // Asumiremos que pueden predecirlo hasta que los octavos estén confirmados.
 
-    // Usamos una transacción para reemplazar las predicciones existentes
-    await prisma.$transaction(async (tx: any) => {
-      // Eliminar predicciones previas de R16
-      await tx.round16Prediction.deleteMany({
-        where: { userId: session.user.id }
-      })
+    // Check if predictions already exist
+    const existingPredictions = await prisma.round16Prediction.count({
+      where: { userId: session.user.id }
+    })
 
-      // Insertar nuevas
+    if (existingPredictions > 0) {
+      return NextResponse.json({ error: "Ya guardaste tus 16 clasificados y no se pueden modificar" }, { status: 400 })
+    }
+
+    // Insertar nuevas
+    await prisma.$transaction(async (tx: any) => {
       const predictionsToInsert = teamIds.map((teamId: string) => ({
         userId: session.user.id,
         teamId: teamId

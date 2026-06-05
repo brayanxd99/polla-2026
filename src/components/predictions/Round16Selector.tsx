@@ -23,8 +23,11 @@ export function Round16Selector({ teams, initialSelectedIds }: Round16SelectorPr
   const [isSaving, setIsSaving] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  const isLocked = initialSelectedIds.length > 0
 
   const toggleTeam = (teamId: string) => {
+    if (isLocked) return
     if (selectedIds.includes(teamId)) {
       setSelectedIds(selectedIds.filter(id => id !== teamId))
     } else {
@@ -85,10 +88,12 @@ export function Round16Selector({ teams, initialSelectedIds }: Round16SelectorPr
           </div>
           <Button 
             onClick={handleSave} 
-            disabled={isSaving || selectedIds.length !== 16}
-            className="bg-polla-neon hover:bg-polla-neon/90 text-black font-bold min-w-[120px]"
+            disabled={isSaving || selectedIds.length !== 16 || isLocked}
+            className={`font-bold min-w-[120px] ${isLocked ? "bg-white/10 text-white/50" : "bg-polla-neon hover:bg-polla-neon/90 text-black"}`}
           >
-            {isSaving ? (
+            {isLocked ? (
+              <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Bloqueado</span>
+            ) : isSaving ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : isSaved ? (
               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Guardado</span>
@@ -119,7 +124,7 @@ export function Round16Selector({ teams, initialSelectedIds }: Round16SelectorPr
                 isSelected 
                   ? 'bg-polla-neon/20 border-polla-neon/50' 
                   : 'bg-white/5 border-white/5 hover:border-white/20'
-              }`}
+              } ${isLocked ? 'cursor-default opacity-80' : 'cursor-pointer'}`}
             >
               <div className={`w-10 h-10 rounded-full overflow-hidden mb-2 border-2 transition-all ${isSelected ? 'border-polla-neon' : 'border-transparent'}`}>
                 {team.flagUrl ? (

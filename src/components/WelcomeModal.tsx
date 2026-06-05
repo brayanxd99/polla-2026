@@ -60,7 +60,11 @@ export function WelcomeModal() {
                   </li>
                   <li className="flex gap-3">
                     <CheckCircle2 className="w-5 h-5 text-polla-blue shrink-0 mt-0.5" />
-                    <span><strong>Cierre de Pronósticos:</strong> Tienes hasta <strong className="text-polla-neon">1 hora antes</strong> de que inicie cada partido para ingresar o modificar tus resultados. ¡Una vez cerrado, no podrás hacer cambios!</span>
+                    <span><strong>Cierre Definitivo:</strong> Al momento de darle "Guardar Pronóstico" (en partidos u Octavos), tu decisión queda <strong className="text-polla-neon">bloqueada para siempre</strong> y no podrás cambiarla después. ¡Piénsalo bien!</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-polla-blue shrink-0 mt-0.5" />
+                    <span><strong>Tiempo Límite:</strong> Tienes hasta 1 hora antes de que inicie cada partido para ingresar tus resultados, si no lo haces, se cerrará la oportunidad.</span>
                   </li>
                 </ul>
               </section>

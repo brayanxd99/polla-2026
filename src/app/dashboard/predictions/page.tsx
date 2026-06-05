@@ -68,7 +68,8 @@ export default async function PredictionsPage() {
             <ul className="list-disc list-inside space-y-1 text-gray-300">
               <li><strong>Partidos:</strong> 3 Puntos si aciertas marcador exacto. 1 Punto si solo aciertas ganador o empate.</li>
               <li><strong>Octavos de Final:</strong> 5 Puntos por cada equipo de la cuadrícula que clasifique oficialmente.</li>
-              <li><strong>Cierre:</strong> Todo partido se bloquea automáticamente <strong className="text-polla-neon">1 hora antes</strong> de iniciar.</li>
+              <li><strong>Cierre Definitivo:</strong> Al darle "Guardar Pronóstico", tu decisión queda <strong className="text-polla-neon">bloqueada para siempre</strong> y no se podrá modificar.</li>
+              <li><strong>Tiempo Límite:</strong> Todo partido se cierra automáticamente 1 hora antes de iniciar.</li>
             </ul>
           </div>
         </div>

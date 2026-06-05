@@ -68,7 +68,7 @@ export function MatchCard({ match, initialPrediction }: MatchCardProps) {
 
   const matchDate = new Date(match.startTime)
   const oneHourBeforeMatch = new Date(matchDate.getTime() - 60 * 60 * 1000)
-  const isMatchLocked = new Date() > oneHourBeforeMatch || match.status !== "PENDING"
+  const isMatchLocked = new Date() > oneHourBeforeMatch || match.status !== "PENDING" || initialPrediction !== undefined
 
   return (
     <motion.div 
@@ -146,7 +146,9 @@ export function MatchCard({ match, initialPrediction }: MatchCardProps) {
 
       <div className="flex justify-center mt-4 border-t border-white/5 pt-4">
         {isMatchLocked ? (
-          <span className="text-sm text-orange-500 font-medium">Pronóstico Cerrado</span>
+          <span className="text-sm text-white/50 font-medium">
+            {initialPrediction !== undefined ? "Pronóstico Guardado y Bloqueado" : "Pronóstico Cerrado"}
+          </span>
         ) : (
           <Button 
             onClick={handleSave} 
