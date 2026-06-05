@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Trophy, Home, Calendar, List, Settings, LogOut, Menu, X, User as UserIcon } from "lucide-react"
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { WelcomeModal } from "@/components/WelcomeModal"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession()
@@ -112,6 +113,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
         </div>
       </main>
+
+      {/* Global Welcome Modal */}
+      <WelcomeModal />
     </div>
   )
 }

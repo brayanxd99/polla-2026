@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { AdminMatchCard } from "@/components/admin/AdminMatchCard"
 import { AdminTeamCard } from "@/components/admin/AdminTeamCard"
+import { AdminSyncButton } from "@/components/admin/AdminSyncButton"
 import { ShieldAlert, Trophy } from "lucide-react"
 
 export default async function AdminDashboard() {
@@ -31,16 +32,21 @@ export default async function AdminDashboard() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-red-500/20 text-red-500 flex items-center justify-center">
-          <ShieldAlert className="w-6 h-6" />
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-red-500/20 text-red-500 flex items-center justify-center">
+            <ShieldAlert className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-black text-white">Panel de Administración</h1>
+            <p className="text-muted-foreground mt-1">
+              Zona de peligro. Cierra partidos para calcular puntos.
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-3xl font-black text-white">Panel de Administración</h1>
-          <p className="text-muted-foreground mt-1">
-            Zona de peligro. Cierra partidos para calcular puntos.
-          </p>
-        </div>
+        
+        {/* Sync Button */}
+        <AdminSyncButton />
       </div>
 
       <div className="space-y-6">

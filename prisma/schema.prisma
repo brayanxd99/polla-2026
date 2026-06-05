@@ -45,6 +45,7 @@ model User {
   image         String?
   password      String?
   role          Role      @default(USER)
+  hasSeenWelcome Boolean  @default(false)
 
   // Polla Stats
   totalPoints   Int       @default(0)
