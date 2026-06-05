@@ -89,7 +89,7 @@ export default async function MatchesPage() {
                 {matches.map((match) => (
                   <tr key={match.id} className="hover:bg-white/5 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-muted-foreground">
-                      {match.startTime.toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                      {match.startTime.toLocaleDateString("es-ES", { timeZone: "America/Bogota", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 py-1 rounded bg-white/5 border border-white/10 text-xs font-medium">

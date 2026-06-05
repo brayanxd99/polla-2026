@@ -90,8 +90,8 @@ async function main() {
       teamsToCreate.add(away)
 
       // Time parsing
-      // Assume UTC or local time? Just save as UTC for now.
-      const startTime = new Date(`${currentDateStr}T${time}:00Z`)
+      // Asumimos hora local (-05:00) para que coincida con la visualización
+      const startTime = new Date(`${currentDateStr}T${time}:00-05:00`)
 
       matchesToCreate.push({
         homeTeamName: home,

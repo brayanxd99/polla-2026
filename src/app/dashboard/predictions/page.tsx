@@ -43,6 +43,7 @@ export default async function PredictionsPage() {
   // Group matches by date
   const groupedMatches = matches.reduce((acc, match) => {
     const dateStr = match.startTime.toLocaleDateString("es-ES", {
+      timeZone: "America/Bogota",
       weekday: "long",
       day: "numeric",
       month: "long"
