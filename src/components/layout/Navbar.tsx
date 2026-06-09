@@ -10,7 +10,7 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f1014]/80 backdrop-blur-md border-b border-white/10 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#2d3139]/90 backdrop-blur-md border-b border-white/10 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-3">
@@ -87,7 +87,7 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="md:hidden fixed top-0 right-0 bottom-0 w-3/4 max-w-sm bg-[#0f1014] border-l border-white/10 shadow-2xl z-40 flex flex-col pt-24 px-6 gap-6"
+              className="md:hidden fixed top-0 right-0 bottom-0 w-3/4 max-w-sm bg-[#2d3139] border-l border-white/10 shadow-2xl z-40 flex flex-col pt-24 px-6 gap-6"
             >
               <div className="flex flex-col gap-4">
                 <Link 
