@@ -89,11 +89,7 @@ export default function LoginPage() {
             />
           </div>
           
-          <div className="flex justify-end pb-2">
-            <a href="#" className="text-sm text-polla-blue hover:text-polla-neon transition-colors">
-              ¿Olvidaste tu contraseña?
-            </a>
-          </div>
+          <div className="pb-2"></div>
 
           <Button 
             type="submit" 
