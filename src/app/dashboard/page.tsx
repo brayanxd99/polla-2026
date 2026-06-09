@@ -18,6 +18,34 @@ const upcomingMatches = await prisma.match.findMany({
     awayTeam: true,
   },
 });
+
+  const topUsers = await prisma.user.findMany({
+    where: {
+      role: { not: 'ADMIN' }
+    },
+    orderBy: [
+      { totalPoints: "desc" },
+      { exactMatches: "desc" },
+    ],
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      totalPoints: true,
+      exactMatches: true,
+    }
+  });
+
+  const uniqueTopUsers = [];
+  const seenNames = new Set();
+  for (const user of topUsers) {
+    const key = user.name || user.id;
+    if (!seenNames.has(key)) {
+      seenNames.add(key);
+      uniqueTopUsers.push(user);
+      if (uniqueTopUsers.length === 5) break;
+    }
+  }
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       <div>
@@ -93,9 +121,33 @@ const upcomingMatches = await prisma.match.findMany({
           </h2>
           
           <div className="space-y-4">
-             <div className="text-center py-8 text-muted-foreground bg-white/5 rounded-xl border border-dashed border-white/10">
-              <p className="text-sm">Ranking en construcción</p>
-            </div>
+            {uniqueTopUsers.map((user, idx) => (
+              <div key={user.id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm
+                    ${idx === 0 ? "bg-yellow-500/20 text-yellow-500" : 
+                      idx === 1 ? "bg-gray-300/20 text-gray-300" : 
+                      idx === 2 ? "bg-amber-600/20 text-amber-600" : 
+                      "bg-white/10 text-white/50"}`}
+                  >
+                    {idx + 1}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-sm">{user.name || "Usuario Anónimo"}</span>
+                    <span className="text-xs text-white/50">{user.exactMatches} aciertos</span>
+                  </div>
+                </div>
+                <div className="font-bold text-polla-neon">
+                  {user.totalPoints} pts
+                </div>
+              </div>
+            ))}
+            
+            {uniqueTopUsers.length === 0 && (
+              <div className="text-center py-8 text-muted-foreground bg-white/5 rounded-xl border border-dashed border-white/10">
+                <p className="text-sm">No hay usuarios en el ranking aún.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
