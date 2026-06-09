@@ -13,6 +13,9 @@ export default async function GlobalRankingPage() {
 
   // Fetch top 50 users globally
   const topUsers = await prisma.user.findMany({
+    where: {
+      role: { not: 'ADMIN' }
+    },
     orderBy: [
       { totalPoints: "desc" },
       { exactMatches: "desc" },
