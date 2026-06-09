@@ -20,7 +20,6 @@ export default async function GlobalRankingPage() {
       { totalPoints: "desc" },
       { exactMatches: "desc" },
     ],
-    take: 50,
     select: {
       id: true,
       name: true,
