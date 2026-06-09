@@ -34,11 +34,6 @@ export function Navbar() {
                   Iniciar Sesión
                 </Button>
               </Link>
-              <Link href="/register">
-                <Button className="bg-gray-900 hover:bg-polla-neon hover:text-gray-900 text-white font-semibold transition-colors">
-                  Regístrate
-                </Button>
-              </Link>
             </div>
           </div>
 
@@ -115,11 +110,6 @@ export function Navbar() {
                 <Link href="/login" onClick={() => setIsOpen(false)}>
                   <Button variant="outline" className="w-full h-12 text-gray-800 border-gray-300 hover:bg-gray-50 hover:text-polla-neon text-base">
                     Iniciar Sesión
-                  </Button>
-                </Link>
-                <Link href="/register" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full h-12 bg-gray-900 text-white hover:bg-polla-neon hover:text-gray-900 transition-colors text-base font-semibold shadow-md">
-                    Regístrate
                   </Button>
                 </Link>
               </div>

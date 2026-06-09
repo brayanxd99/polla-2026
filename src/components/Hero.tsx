@@ -50,15 +50,10 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Link href="/register">
-            <Button size="lg" className="w-full sm:w-auto bg-polla-neon text-black hover:bg-polla-neon/90 h-14 px-8 text-lg font-bold shadow-[0_0_20px_rgba(235,227,1,0.4)]">
-              Prueba Suerte y Crea Tu Mundial
-              <ChevronRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
           <Link href="/login">
-            <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 text-lg glass border-white/20 hover:bg-white/10 text-white">
+            <Button size="lg" className="w-full sm:w-auto bg-polla-neon text-black hover:bg-polla-neon/90 h-14 px-8 text-lg font-bold shadow-[0_0_20px_rgba(235,227,1,0.4)]">
               Iniciar Sesión en Asturias
+              <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
         </motion.div>
