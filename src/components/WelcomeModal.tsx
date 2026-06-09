@@ -98,21 +98,21 @@ export function WelcomeModal() {
                     <Medal className="w-8 h-8 text-yellow-500" />
                     <div>
                       <p className="font-bold text-yellow-500">1er Lugar</p>
-                      <p className="text-sm text-gray-300">Gran Premio Mayor (Por definir)</p>
+                      <p className="text-sm text-gray-300">$ 300.000 COP</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-gray-400/20 to-transparent border border-gray-400/30">
                     <Medal className="w-8 h-8 text-gray-400" />
                     <div>
                       <p className="font-bold text-gray-400">2do Lugar</p>
-                      <p className="text-sm text-gray-300">Premio Especial (Por definir)</p>
+                      <p className="text-sm text-gray-300">$ 200.000 COP</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-amber-700/20 to-transparent border border-amber-700/30">
                     <Medal className="w-8 h-8 text-amber-600" />
                     <div>
                       <p className="font-bold text-amber-600">3er Lugar</p>
-                      <p className="text-sm text-gray-300">Premio Sorpresa (Por definir)</p>
+                      <p className="text-sm text-gray-300">$ 100.000 COP</p>
                     </div>
                   </div>
                 </div>
