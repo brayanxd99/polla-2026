@@ -10,27 +10,27 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#2d3139]/90 backdrop-blur-md border-b border-white/10 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#f8f9fa]/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-3">
             <img src="/logo.png.jpg" alt="Asturias Logo" className="h-10 w-auto object-contain" />
-            <span className="text-xl font-bold tracking-tight hidden sm:block text-white">
+            <span className="text-xl font-bold tracking-tight hidden sm:block text-gray-900">
               Polla<span className="text-polla-neon">26</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-sm font-medium text-gray-300 hover:text-polla-neon transition-colors">
+            <Link href="#features" className="text-sm font-medium text-gray-600 hover:text-polla-neon transition-colors">
               Características
             </Link>
-            <Link href="#ranking" className="text-sm font-medium text-gray-300 hover:text-polla-neon transition-colors">
+            <Link href="#ranking" className="text-sm font-medium text-gray-600 hover:text-polla-neon transition-colors">
               Ranking Global
             </Link>
-            <div className="flex items-center gap-4 border-l border-white/20 pl-8">
+            <div className="flex items-center gap-4 border-l border-gray-200 pl-8">
               <Link href="/login">
-                <Button variant="ghost" className="text-gray-300 hover:bg-white/10 hover:text-polla-neon">
+                <Button variant="ghost" className="text-gray-600 hover:bg-gray-100 hover:text-polla-neon">
                   Iniciar Sesión
                 </Button>
               </Link>
@@ -39,7 +39,7 @@ export function Navbar() {
 
           {/* Animated Mobile Menu Button */}
           <button 
-            className="md:hidden relative z-50 p-2 text-white hover:text-polla-neon focus:outline-none"
+            className="md:hidden relative z-50 p-2 text-gray-900 hover:text-polla-neon focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
           >
             <AnimatePresence mode="wait">
@@ -87,20 +87,20 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="md:hidden fixed top-0 right-0 bottom-0 w-3/4 max-w-sm bg-[#2d3139] border-l border-white/10 shadow-2xl z-40 flex flex-col pt-24 px-6 gap-6"
+              className="md:hidden fixed top-0 right-0 bottom-0 w-3/4 max-w-sm bg-[#f8f9fa] border-l border-gray-200 shadow-2xl z-40 flex flex-col pt-24 px-6 gap-6"
             >
               <div className="flex flex-col gap-4">
                 <Link 
                   href="#features" 
                   onClick={() => setIsOpen(false)}
-                  className="text-lg font-semibold text-gray-200 hover:text-polla-neon py-2 border-b border-white/10 transition-colors"
+                  className="text-lg font-semibold text-gray-800 hover:text-polla-neon py-2 border-b border-gray-100 transition-colors"
                 >
                   Características
                 </Link>
                 <Link 
                   href="#ranking" 
                   onClick={() => setIsOpen(false)}
-                  className="text-lg font-semibold text-gray-200 hover:text-polla-neon py-2 border-b border-white/10 transition-colors"
+                  className="text-lg font-semibold text-gray-800 hover:text-polla-neon py-2 border-b border-gray-100 transition-colors"
                 >
                   Ranking Global
                 </Link>
@@ -108,7 +108,7 @@ export function Navbar() {
               
               <div className="flex flex-col gap-3 mt-auto mb-8">
                 <Link href="/login" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full h-12 text-white border-white/20 hover:bg-white/10 hover:text-polla-neon text-base glass">
+                  <Button variant="outline" className="w-full h-12 text-gray-800 border-gray-300 hover:bg-gray-50 hover:text-polla-neon text-base">
                     Iniciar Sesión
                   </Button>
                 </Link>
