@@ -107,12 +107,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center mt-8 text-sm text-muted-foreground">
-          ¿No tienes una cuenta?{' '}
-          <Link href="/register" className="text-polla-neon hover:text-white font-medium transition-colors">
-            Regístrate aquí
-          </Link>
-        </p>
+        {/* Enlace de registro removido a petición del administrador */}
       </motion.div>
     </div>
   )

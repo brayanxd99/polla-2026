@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { AdminMatchCard } from "@/components/admin/AdminMatchCard"
 import { AdminTeamCard } from "@/components/admin/AdminTeamCard"
 import { AdminSyncButton } from "@/components/admin/AdminSyncButton"
+import { AdminUserCreation } from "@/components/admin/AdminUserCreation"
 import { ShieldAlert, Trophy } from "lucide-react"
 
 export default async function AdminDashboard() {
@@ -49,7 +50,11 @@ export default async function AdminDashboard() {
         <AdminSyncButton />
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 pt-8 border-t border-white/10">
+        <AdminUserCreation />
+      </div>
+
+      <div className="space-y-6 pt-8">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
           Partidos Pendientes ({pendingMatches.length})
