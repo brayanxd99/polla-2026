@@ -14,7 +14,7 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-3">
-            <img src="/logo.png.jpg" alt="Asturias Logo" className="h-10 w-auto object-contain" />
+            <img src="/logo.png.jpg" alt="Asturias Logo" className="h-10 w-auto object-contain mix-blend-multiply" />
             <span className="text-xl font-bold tracking-tight hidden sm:block text-gray-900">
               Polla<span className="text-polla-neon">26</span>
             </span>
