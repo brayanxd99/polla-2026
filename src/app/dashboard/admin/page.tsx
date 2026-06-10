@@ -31,6 +31,24 @@ export default async function AdminDashboard() {
     orderBy: { name: 'asc' }
   })
 
+  const usersWithPredictions = await prisma.user.findMany({
+    where: { role: 'USER' },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      _count: {
+        select: { predictions: true }
+      }
+    },
+    orderBy: {
+      predictions: { _count: 'desc' }
+    }
+  })
+
+  const participatingUsersCount = usersWithPredictions.filter(u => u._count.predictions > 0).length
+
+
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -107,6 +125,48 @@ export default async function AdminDashboard() {
           {teams.map((team) => (
             <AdminTeamCard key={team.id} team={team} />
           ))}
+        </div>
+      </div>
+
+      <div className="space-y-6 pt-8 border-t border-white/10">
+        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          Participación de Usuarios
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          {participatingUsersCount} de {usersWithPredictions.length} usuarios han guardado al menos un pronóstico.
+        </p>
+        
+        <div className="glass rounded-2xl border border-white/10 overflow-hidden">
+          <div className="max-h-[500px] overflow-y-auto">
+            <table className="w-full text-sm text-left text-white/80">
+              <thead className="text-xs text-white uppercase bg-white/5 sticky top-0 backdrop-blur-md">
+                <tr>
+                  <th className="px-6 py-4 font-semibold">Nombre</th>
+                  <th className="px-6 py-4 font-semibold">Correo</th>
+                  <th className="px-6 py-4 font-semibold text-center">Pronósticos Guardados</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {usersWithPredictions.map((user) => (
+                  <tr key={user.id} className="hover:bg-white/5 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-white/50">{user.email}</td>
+                    <td className="px-6 py-4 text-center">
+                      {user._count.predictions > 0 ? (
+                        <span className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-green-500/20 text-green-400 font-medium">
+                          {user._count.predictions}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-white/5 text-white/30">
+                          0
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
