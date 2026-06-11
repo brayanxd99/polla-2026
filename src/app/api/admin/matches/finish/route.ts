@@ -2,6 +2,7 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 import { calculatePoints } from "@/lib/scoring"
+import { revalidatePath } from "next/cache"
 
 export async function POST(req: Request) {
   try {
@@ -69,6 +70,9 @@ export async function POST(req: Request) {
         }
       })
     }
+
+    // Revalidate cache for the whole app since rankings changed
+    revalidatePath('/', 'layout')
 
     return NextResponse.json({ success: true, message: "Match finalized and points distributed" })
   } catch (error) {
