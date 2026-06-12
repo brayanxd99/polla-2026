@@ -1,23 +1,33 @@
+export const dynamic = 'force-dynamic'
+
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
 import { Trophy, Activity, Target, Flame } from "lucide-react"
 import { prisma } from "@/lib/prisma";
 
 export default async function DashboardPage() {
+  const session = await auth()
+  
+  if (!session?.user?.id) {
+    redirect("/login")
+  }
+
   // Busca los próximos 4 partidos
-const upcomingMatches = await prisma.match.findMany({
-  where: {
-    startTime: {
-      gte: new Date(), // Solo partidos desde hoy en adelante
+  const upcomingMatches = await prisma.match.findMany({
+    where: {
+      startTime: {
+        gte: new Date(), // Solo partidos desde hoy en adelante
+      },
     },
-  },
-  orderBy: {
-    startTime: 'asc', // El más próximo primero
-  },
-  take: 4, // Solo traemos 4 para que quepan en la tarjeta
-  include: {
-    homeTeam: true,
-    awayTeam: true,
-  },
-});
+    orderBy: {
+      startTime: 'asc', // El más próximo primero
+    },
+    take: 4, // Solo traemos 4 para que quepan en la tarjeta
+    include: {
+      homeTeam: true,
+      awayTeam: true,
+    },
+  });
 
   const topUsers = await prisma.user.findMany({
     where: {
@@ -36,16 +46,29 @@ const upcomingMatches = await prisma.match.findMany({
     }
   });
 
+  // Unique users logic
   const uniqueTopUsers = [];
   const seenNames = new Set();
+  
   for (const user of topUsers) {
     const key = user.name || user.id;
     if (!seenNames.has(key)) {
       seenNames.add(key);
       uniqueTopUsers.push(user);
-      if (uniqueTopUsers.length === 5) break;
     }
   }
+
+  // Current user's stats
+  const currentUserIndex = uniqueTopUsers.findIndex(u => u.id === session.user.id);
+  const currentUser = currentUserIndex !== -1 ? uniqueTopUsers[currentUserIndex] : null;
+  
+  const userTotalPoints = currentUser?.totalPoints || 0;
+  const userExactMatches = currentUser?.exactMatches || 0;
+  const userPosition = currentUserIndex !== -1 ? `#${currentUserIndex + 1}` : "#--";
+  
+  // Top 5 only for the mini ranking
+  const top5Users = uniqueTopUsers.slice(0, 5);
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       <div>
@@ -56,9 +79,9 @@ const upcomingMatches = await prisma.match.findMany({
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Puntos Totales", value: "0", icon: Trophy, color: "text-polla-gold" },
-          { label: "Aciertos Exactos", value: "0", icon: Target, color: "text-polla-neon" },
-          { label: "Posición Global", value: "#--", icon: Activity, color: "text-polla-blue" },
+          { label: "Puntos Totales", value: userTotalPoints.toString(), icon: Trophy, color: "text-polla-gold" },
+          { label: "Aciertos Exactos", value: userExactMatches.toString(), icon: Target, color: "text-polla-neon" },
+          { label: "Posición Global", value: userPosition, icon: Activity, color: "text-polla-blue" },
           { label: "Racha Actual", value: "0", icon: Flame, color: "text-orange-500" },
         ].map((stat, i) => (
           <div key={i} className="glass rounded-2xl p-6 border border-white/5 relative overflow-hidden group">
@@ -121,7 +144,7 @@ const upcomingMatches = await prisma.match.findMany({
           </h2>
           
           <div className="space-y-4">
-            {uniqueTopUsers.map((user, idx) => (
+            {top5Users.map((user, idx) => (
               <div key={user.id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm
@@ -143,7 +166,7 @@ const upcomingMatches = await prisma.match.findMany({
               </div>
             ))}
             
-            {uniqueTopUsers.length === 0 && (
+            {top5Users.length === 0 && (
               <div className="text-center py-8 text-muted-foreground bg-white/5 rounded-xl border border-dashed border-white/10">
                 <p className="text-sm">No hay usuarios en el ranking aún.</p>
               </div>
