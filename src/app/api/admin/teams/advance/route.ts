@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 
 export async function POST(req: Request) {
   try {
@@ -69,6 +70,7 @@ export async function POST(req: Request) {
       }
     }
 
+    revalidatePath('/', 'layout')
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Error updating team advancement:", error)
