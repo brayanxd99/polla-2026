@@ -4,8 +4,16 @@ import { Round16Selector } from "@/components/predictions/Round16Selector"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { Info } from "lucide-react"
+import Link from "next/link"
 
-export default async function PredictionsPage() {
+export default async function PredictionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const params = await searchParams
+  const filter = params.filter || 'round32'
+
   const session = await auth()
   
   if (!session?.user?.id) {
@@ -13,7 +21,7 @@ export default async function PredictionsPage() {
   }
 
   // Fetch all matches ordered by start time
-  const matches = await prisma.match.findMany({
+  let matches = await prisma.match.findMany({
     include: {
       homeTeam: true,
       awayTeam: true,
@@ -40,6 +48,12 @@ export default async function PredictionsPage() {
     where: { userId: session.user.id }
   })
   const initialR16Ids = r16Predictions.map(p => p.teamId)
+
+  if (filter === 'round32') {
+    matches = matches.filter(m => m.round === 'Round of 32')
+  } else if (filter === 'groups') {
+    matches = matches.filter(m => m.round !== 'Round of 32')
+  }
 
   // Group matches by date
   const groupedMatches = matches.reduce((acc, match) => {
@@ -76,6 +90,27 @@ export default async function PredictionsPage() {
       </div>
 
       <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
+
+      <div className="flex flex-wrap gap-2 mb-6">
+        <Link 
+          href="/dashboard/predictions?filter=round32"
+          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'round32' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+        >
+          16avos de Final
+        </Link>
+        <Link 
+          href="/dashboard/predictions?filter=groups"
+          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'groups' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+        >
+          Fase de Grupos
+        </Link>
+        <Link 
+          href="/dashboard/predictions?filter=all"
+          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'all' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+        >
+          Todos los Partidos
+        </Link>
+      </div>
 
       {Object.entries(groupedMatches).map(([date, dayMatches]) => (
         <div key={date} className="space-y-4">
