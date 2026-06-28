@@ -108,10 +108,10 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
                <EmptyNode />
              </div>
              
-             {/* Trofeo con fondo transparente oficial */}
+             {/* Trofeo generado con transparencia por mix-blend-screen */}
              <div className="w-48 h-64 md:w-56 md:h-80 mt-4 relative z-30 flex items-center justify-center">
                <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/20 via-yellow-300/10 to-transparent rounded-full opacity-60 blur-[30px]"></div>
-               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/FIFA_World_Cup_Trophy.png/410px-FIFA_World_Cup_Trophy.png" alt="Copa Mundial" className="w-full h-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] z-10" />
+               <img src="/trofeo.jpg" alt="Copa Mundial" className="w-full h-full object-contain mix-blend-screen filter contrast-125 brightness-110 z-10" />
              </div>
              
              <div className="mt-8 flex flex-col items-center gap-2 z-20">
