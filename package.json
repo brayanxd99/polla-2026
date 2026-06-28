@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:matches": "npx tsx --env-file=.env scripts/seed-matches.ts"
+    "seed:matches": "npx tsx --env-file=.env scripts/seed-matches.ts",
+    "seed:round32": "npx tsx --env-file=.env scripts/seed-round32.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",

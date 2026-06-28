@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma"
 import { AdminMatchCard } from "@/components/admin/AdminMatchCard"
 import { AdminTeamCard } from "@/components/admin/AdminTeamCard"
 import { AdminSyncButton } from "@/components/admin/AdminSyncButton"
+import { AdminSeedRound32Button } from "@/components/admin/AdminSeedRound32Button"
 import { AdminUserCreation } from "@/components/admin/AdminUserCreation"
 import { ShieldAlert, Trophy } from "lucide-react"
 
@@ -66,8 +67,10 @@ export default async function AdminDashboard() {
           </div>
         </div>
         
-        {/* Sync Button */}
-        <AdminSyncButton />
+        <div className="flex flex-wrap items-center gap-4">
+          <AdminSeedRound32Button />
+          <AdminSyncButton />
+        </div>
       </div>
 
       <div className="space-y-6 pt-8 border-t border-white/10">
