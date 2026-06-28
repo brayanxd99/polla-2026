@@ -17,22 +17,22 @@ const FLAG_MAP: Record<string, string> = {
 }
 
 const ROUND32_MATCHES = [
-  { home: "Alemania", away: "Paraguay", time: "2026-06-29T12:00:00-05:00", stadium: "Dallas Stadium" },
-  { home: "Francia", away: "Suecia", time: "2026-06-29T15:00:00-05:00", stadium: "New York New Jersey Stadium" },
-  { home: "Sudáfrica", away: "Canadá", time: "2026-06-29T18:00:00-05:00", stadium: "BC Place Vancouver" },
-  { home: "Países Bajos", away: "Marruecos", time: "2026-06-30T12:00:00-05:00", stadium: "Los Angeles Stadium" },
-  { home: "Portugal", away: "Croacia", time: "2026-06-30T15:00:00-05:00", stadium: "Miami Stadium" },
-  { home: "España", away: "Austria", time: "2026-06-30T18:00:00-05:00", stadium: "Atlanta Stadium" },
-  { home: "Estados Unidos", away: "Bosnia y Herzegovina", time: "2026-07-01T12:00:00-05:00", stadium: "Seattle Stadium" },
-  { home: "Bélgica", away: "Senegal", time: "2026-07-01T15:00:00-05:00", stadium: "San Francisco Bay Area Stadium" },
-  { home: "Brasil", away: "Japón", time: "2026-07-01T18:00:00-05:00", stadium: "Houston Stadium" },
-  { home: "Costa de Marfil", away: "Noruega", time: "2026-07-02T12:00:00-05:00", stadium: "Philadelphia Stadium" },
-  { home: "México", away: "Ecuador", time: "2026-07-02T15:00:00-05:00", stadium: "Estadio Ciudad de México" },
-  { home: "Inglaterra", away: "RD de Congo", time: "2026-07-02T18:00:00-05:00", stadium: "Boston Stadium" },
-  { home: "Argentina", away: "Cabo Verde", time: "2026-07-03T11:00:00-05:00", stadium: "Estadio Guadalajara" },
-  { home: "Australia", away: "Egipto", time: "2026-07-03T14:00:00-05:00", stadium: "Estadio Monterrey" },
-  { home: "Suiza", away: "Argelia", time: "2026-07-03T17:00:00-05:00", stadium: "Kansas City Stadium" },
-  { home: "Colombia", away: "Ghana", time: "2026-07-03T20:00:00-05:00", stadium: "Toronto Stadium" }
+  { home: "Sudáfrica", away: "Canadá", time: "2026-06-28T14:00:00-05:00", stadium: "Estadio Los Angeles" },
+  { home: "Brasil", away: "Japón", time: "2026-06-29T12:00:00-05:00", stadium: "Estadio Houston" },
+  { home: "Alemania", away: "Paraguay", time: "2026-06-29T15:30:00-05:00", stadium: "Estadio Boston" },
+  { home: "Países Bajos", away: "Marruecos", time: "2026-06-29T20:00:00-05:00", stadium: "Estadio Monterrey" },
+  { home: "Costa de Marfil", away: "Noruega", time: "2026-06-30T12:00:00-05:00", stadium: "Estadio Dallas" },
+  { home: "Francia", away: "Suecia", time: "2026-06-30T16:00:00-05:00", stadium: "Estadio Nueva York/Nueva Jersey" },
+  { home: "México", away: "Ecuador", time: "2026-06-30T20:00:00-05:00", stadium: "Estadio Ciudad de México" },
+  { home: "Inglaterra", away: "RD de Congo", time: "2026-07-01T11:00:00-05:00", stadium: "Estadio Atlanta" },
+  { home: "Bélgica", away: "Senegal", time: "2026-07-01T15:00:00-05:00", stadium: "Estadio Seattle" },
+  { home: "Estados Unidos", away: "Bosnia y Herzegovina", time: "2026-07-01T19:00:00-05:00", stadium: "Estadio de la Bahía de San Francisco" },
+  { home: "España", away: "Austria", time: "2026-07-02T14:00:00-05:00", stadium: "Estadio Los Angeles" },
+  { home: "Portugal", away: "Croacia", time: "2026-07-02T18:00:00-05:00", stadium: "Estadio de Toronto" },
+  { home: "Suiza", away: "Argelia", time: "2026-07-02T22:00:00-05:00", stadium: "Estadio BC Place Vancouver" },
+  { home: "Australia", away: "Egipto", time: "2026-07-03T13:00:00-05:00", stadium: "Estadio Dallas" },
+  { home: "Argentina", away: "Cabo Verde", time: "2026-07-03T17:00:00-05:00", stadium: "Estadio Miami" },
+  { home: "Colombia", away: "Ghana", time: "2026-07-03T20:30:00-05:00", stadium: "Estadio Kansas City" }
 ]
 
 async function getOrCreateTeam(name: string): Promise<any> {

@@ -50,9 +50,9 @@ export default async function PredictionsPage({
   const initialR16Ids = r16Predictions.map(p => p.teamId)
 
   if (filter === 'round32') {
-    matches = matches.filter(m => m.round === 'Round of 32')
+    matches = matches.filter(m => m.round === '16avos de Final')
   } else if (filter === 'groups') {
-    matches = matches.filter(m => m.round !== 'Round of 32')
+    matches = matches.filter(m => m.round !== '16avos de Final')
   }
 
   // Group matches by date

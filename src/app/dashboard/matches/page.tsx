@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import { BracketView } from "@/components/matches/BracketView"
 
 export default async function MatchesPage() {
   const session = await auth()
@@ -36,6 +37,15 @@ export default async function MatchesPage() {
       <div>
         <h1 className="text-3xl font-black text-white mb-2">Información del Torneo</h1>
         <p className="text-muted-foreground">Grupos, equipos, fechas y sedes oficiales de la Copa Mundial 2026.</p>
+      </div>
+
+      {/* Bracket Section */}
+      <div>
+        <h2 className="text-2xl font-bold text-polla-neon mb-6 flex items-center gap-2">
+          <span className="w-2 h-8 rounded-full bg-polla-neon" />
+          Fase Final
+        </h2>
+        <BracketView matches={matches as any} />
       </div>
 
       {/* Grupos Section */}
