@@ -111,7 +111,7 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
              {/* Trofeo de la imagen del usuario */}
              <div className="w-48 h-64 md:w-64 md:h-80 mt-8 relative z-30">
                <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/20 via-yellow-300/10 to-transparent rounded-t-full rounded-b-xl opacity-80 blur-[20px]"></div>
-               <img src="/copa.jpg" alt="Copa Mundial" className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]" onError={(e) => { e.currentTarget.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/FIFA_World_Cup_2026_Logo.svg/1024px-FIFA_World_Cup_2026_Logo.svg.png' }} />
+               <img src="/copa.png" alt="Copa Mundial" className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]" onError={(e) => { e.currentTarget.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/FIFA_World_Cup_2026_Logo.svg/1024px-FIFA_World_Cup_2026_Logo.svg.png' }} />
              </div>
              
              <div className="mt-8 flex flex-col items-center gap-2 z-20">
