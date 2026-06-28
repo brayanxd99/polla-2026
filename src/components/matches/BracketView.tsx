@@ -39,16 +39,16 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
   const BracketMatch = ({ teams }: { teams: string[] }) => {
     const match = getMatchByTeams(teams[0], teams[1])
     return (
-      <div className="flex flex-col gap-1 w-32 sm:w-44 bg-white/10 border border-white/20 p-1.5 rounded-lg backdrop-blur-md shadow-xl relative z-10 transition-transform hover:scale-105">
+      <div className="flex flex-col gap-1 w-36 sm:w-48 bg-black/70 border border-white/20 p-1.5 rounded-lg backdrop-blur-md shadow-2xl relative z-20 transition-all hover:scale-105 hover:border-polla-neon/50">
         {[teams[0], teams[1]].map((teamName, i) => {
           const team = match ? (match.homeTeam.name === teamName ? match.homeTeam : match.awayTeam) : null
           return (
-            <div key={i} className="flex items-center justify-between gap-1 px-1.5 py-1 bg-black/40 rounded border border-white/5">
-              <span className="text-[10px] sm:text-xs font-bold text-white/90 truncate">{teamName.substring(0, 15)}</span>
+            <div key={i} className="flex items-center justify-between gap-1 px-2 py-1.5 bg-gradient-to-r from-white/5 to-transparent rounded border border-white/5">
+              <span className="text-[11px] sm:text-xs font-bold text-white tracking-wide truncate drop-shadow-md">{teamName.substring(0, 15)}</span>
               {team?.flagUrl ? (
-                <img src={team.flagUrl} alt="" className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border border-white/20 object-cover shrink-0" />
+                <img src={team.flagUrl} alt="" className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white/10 object-cover shrink-0 shadow-lg" />
               ) : (
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/10 shrink-0" />
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 shrink-0" />
               )}
             </div>
           )
@@ -64,13 +64,21 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
 
   return (
     <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
-      <div className="min-w-[900px] flex justify-between relative bg-[#0a4d1a]/20 bg-gradient-to-b from-[#0a4d1a]/40 to-background rounded-3xl border border-polla-neon/30 p-4 sm:p-8 shadow-[0_0_30px_rgba(204,255,0,0.1)] overflow-hidden">
+      <div className="min-w-[900px] flex justify-between relative rounded-3xl border border-polla-neon/30 p-4 sm:p-8 shadow-[0_0_30px_rgba(204,255,0,0.15)] overflow-hidden">
         
-        {/* Líneas de conexión decorativas de fondo */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+        {/* Fondo de Cancha Mejorado */}
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/pitch_bg.jpg" 
+            alt="Cancha" 
+            fill 
+            className="object-cover opacity-30 mix-blend-luminosity" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a4d1a]/80 via-background/90 to-background z-10" />
+        </div>
 
         {/* Lado Izquierdo */}
-        <div className="flex gap-4 sm:gap-8 h-[900px]">
+        <div className="flex gap-4 sm:gap-8 h-[900px] z-10">
           <div className="flex flex-col justify-around h-full">
             <h3 className="text-white font-black text-center absolute top-4 left-8 text-xl">1/16</h3>
             {leftMatchups.map((teams, i) => (
@@ -100,13 +108,13 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
                <EmptyNode />
              </div>
              
-             {/* Trofeo (Usando un div dorado o imagen si existiera) */}
-             <div className="w-32 h-48 md:w-40 md:h-64 mt-8 relative">
-               <div className="absolute inset-0 bg-gradient-to-t from-yellow-500 via-yellow-300 to-yellow-600 rounded-t-full rounded-b-xl opacity-80 blur-[2px] shadow-[0_0_50px_rgba(255,215,0,0.5)]"></div>
-               <div className="absolute inset-0 flex items-center justify-center text-5xl">🏆</div>
+             {/* Trofeo de la imagen del usuario */}
+             <div className="w-48 h-64 md:w-64 md:h-80 mt-8 relative z-30">
+               <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/20 via-yellow-300/10 to-transparent rounded-t-full rounded-b-xl opacity-80 blur-[20px]"></div>
+               <img src="/copa.jpg" alt="Copa Mundial" className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]" onError={(e) => { e.currentTarget.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/FIFA_World_Cup_2026_Logo.svg/1024px-FIFA_World_Cup_2026_Logo.svg.png' }} />
              </div>
              
-             <div className="mt-8 flex flex-col items-center gap-2">
+             <div className="mt-8 flex flex-col items-center gap-2 z-20">
                <h3 className="text-white font-bold text-sm">3º Y 4º PUESTO</h3>
                <div className="flex gap-2">
                  <EmptyNode />
@@ -117,7 +125,7 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
         </div>
 
         {/* Lado Derecho */}
-        <div className="flex gap-4 sm:gap-8 h-[900px] flex-row-reverse">
+        <div className="flex gap-4 sm:gap-8 h-[900px] flex-row-reverse z-10">
           <div className="flex flex-col justify-around h-full">
             <h3 className="text-white font-black text-center absolute top-4 right-8 text-xl">1/16</h3>
             {rightMatchups.map((teams, i) => (
