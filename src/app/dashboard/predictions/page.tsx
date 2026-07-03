@@ -101,7 +101,10 @@ export default async function PredictionsPage({
 
       <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
       
-      <QFSelector teams={teams} initialSelectedIds={initialQFIds} />
+      <QFSelector 
+        teams={teams.filter(t => t.advancedToR16 || ['Colombia', 'Argentina', 'Cabo Verde', 'Ghana'].includes(t.name))} 
+        initialSelectedIds={initialQFIds} 
+      />
 
       <div className="flex flex-wrap gap-2 mb-6">
         <Link 
