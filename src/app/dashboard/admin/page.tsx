@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { AdminMatchCard } from "@/components/admin/AdminMatchCard"
 import { AdminTeamCard } from "@/components/admin/AdminTeamCard"
+import { AdminQFTeamCard } from "@/components/admin/AdminQFTeamCard"
 import { AdminSyncButton } from "@/components/admin/AdminSyncButton"
 import { AdminSeedRound32Button } from "@/components/admin/AdminSeedRound32Button"
 import { AdminSeedRound16Button } from "@/components/admin/AdminSeedRound16Button"
@@ -131,6 +132,22 @@ export default async function AdminDashboard() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {teams.map((team) => (
             <AdminTeamCard key={team.id} team={team} />
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-6 pt-8 border-t border-white/10">
+        <h2 className="text-xl font-bold text-blue-400 flex items-center gap-2">
+          <Trophy className="w-5 h-5" />
+          Clasificados a Cuartos de Final
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Marca los equipos que oficialmente clasificaron a cuartos. Se otorgarán 5 puntos a los usuarios que hayan acertado.
+        </p>
+        
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {teams.map((team) => (
+            <AdminQFTeamCard key={team.id} team={team} />
           ))}
         </div>
       </div>

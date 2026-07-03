@@ -56,6 +56,7 @@ model User {
   sessions      Session[]
   predictions   Prediction[]
   r16Predictions Round16Prediction[]
+  qfPredictions  QFPrediction[]
   leaguesOwned  League[]       @relation("LeagueOwner")
   leagueMembers LeagueMember[]
 }
@@ -81,10 +82,12 @@ model Team {
   flagUrl   String?
   group     String?  // e.g. Group A
   advancedToR16 Boolean @default(false)
+  advancedToQF  Boolean @default(false)
 
   homeMatches Match[] @relation("HomeTeam")
   awayMatches Match[] @relation("AwayTeam")
   r16Predictions Round16Prediction[]
+  qfPredictions  QFPrediction[]
 }
 
 model Match {
@@ -124,6 +127,19 @@ model Prediction {
 }
 
 model Round16Prediction {
+  id          String   @id @default(cuid())
+  userId      String
+  teamId      String
+  pointsEarned Int?    // 5 if correct, null before resolved
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+}
+
+model QFPrediction {
   id          String   @id @default(cuid())
   userId      String
   teamId      String

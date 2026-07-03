@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { MatchCard } from "@/components/predictions/MatchCard"
 import { Round16Selector } from "@/components/predictions/Round16Selector"
+import { QFSelector } from "@/components/predictions/QFSelector"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { Info } from "lucide-react"
@@ -49,6 +50,12 @@ export default async function PredictionsPage({
   })
   const initialR16Ids = r16Predictions.map(p => p.teamId)
 
+  // Fetch user's QF predictions
+  const qfPredictions = await prisma.qFPrediction.findMany({
+    where: { userId: session.user.id }
+  })
+  const initialQFIds = qfPredictions.map(p => p.teamId)
+
   if (filter === 'round16') {
     matches = matches.filter(m => m.round === 'Octavos de Final')
   } else if (filter === 'round32') {
@@ -84,6 +91,7 @@ export default async function PredictionsPage({
             <ul className="list-disc list-inside space-y-1 text-gray-300">
               <li><strong>Partidos:</strong> 3 Puntos si aciertas marcador exacto. 1 Punto si solo aciertas ganador o empate.</li>
               <li><strong>Octavos de Final:</strong> 5 Puntos por cada equipo de la cuadrícula que clasifique oficialmente.</li>
+              <li><strong>Cuartos de Final:</strong> 5 Puntos por cada equipo de la cuadrícula que clasifique a cuartos oficialmente.</li>
               <li><strong>Cierre Definitivo:</strong> Al darle "Guardar Pronóstico", tu decisión queda <strong className="text-polla-neon">bloqueada para siempre</strong> y no se podrá modificar.</li>
               <li><strong>Tiempo Límite:</strong> Todo partido se cierra automáticamente 1 hora antes de iniciar.</li>
             </ul>
@@ -92,6 +100,8 @@ export default async function PredictionsPage({
       </div>
 
       <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
+      
+      <QFSelector teams={teams} initialSelectedIds={initialQFIds} />
 
       <div className="flex flex-wrap gap-2 mb-6">
         <Link 
