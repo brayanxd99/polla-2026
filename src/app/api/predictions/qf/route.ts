@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     // Check if predictions already exist
-    const existingPredictions = await prisma.qfPrediction.count({
+    const existingPredictions = await prisma.quarterFinalPrediction.count({
       where: { userId: session.user.id }
     })
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         teamId: teamId
       }))
 
-      await tx.qfPrediction.createMany({
+      await tx.quarterFinalPrediction.createMany({
         data: predictionsToInsert
       })
     })

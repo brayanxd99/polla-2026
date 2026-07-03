@@ -51,7 +51,7 @@ export default async function PredictionsPage({
   const initialR16Ids = r16Predictions.map(p => p.teamId)
 
   // Fetch user's QF predictions
-  const qfPredictions = await prisma.qfPrediction.findMany({
+  const qfPredictions = await prisma.quarterFinalPrediction.findMany({
     where: { userId: session.user.id }
   })
   const initialQFIds = qfPredictions.map(p => p.teamId)

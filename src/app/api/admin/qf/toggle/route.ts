@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       })
 
       // Find all predictions for this team
-      const predictions = await tx.qfPrediction.findMany({
+      const predictions = await tx.quarterFinalPrediction.findMany({
         where: { teamId }
       })
 
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
         if (advanced) {
           // Grant points if not already granted
           if (pred.pointsEarned === null) {
-            await tx.qfPrediction.update({
+            await tx.quarterFinalPrediction.update({
               where: { id: pred.id },
               data: { pointsEarned: 5 }
             })
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         } else {
           // Revoke points if previously granted
           if (pred.pointsEarned === 5) {
-            await tx.qfPrediction.update({
+            await tx.quarterFinalPrediction.update({
               where: { id: pred.id },
               data: { pointsEarned: null }
             })
