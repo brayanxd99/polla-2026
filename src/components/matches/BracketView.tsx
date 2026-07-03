@@ -6,9 +6,10 @@ type MatchWithTeams = Match & { homeTeam: Team, awayTeam: Team }
 
 export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
   const r32Matches = matches.filter(m => m.round === "16avos de Final")
+  const r16Matches = matches.filter(m => m.round === "Octavos de Final")
 
-  const getMatchByTeams = (t1: string, t2: string) => {
-    return r32Matches.find(m => 
+  const getMatchByTeams = (t1: string, t2: string, roundMatches: MatchWithTeams[]) => {
+    return roundMatches.find(m => 
       (m.homeTeam.name === t1 && m.awayTeam.name === t2) || 
       (m.homeTeam.name === t2 && m.awayTeam.name === t1)
     )
@@ -36,10 +37,24 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
     ["Colombia", "Ghana"],
   ]
 
-  const BracketMatch = ({ teams }: { teams: string[] }) => {
-    const match = getMatchByTeams(teams[0], teams[1])
+  const leftRound16 = [
+    ["Paraguay", "Francia"],
+    ["Canadá", "Marruecos"],
+    ["Portugal", "España"],
+    ["Estados Unidos", "Bélgica"],
+  ]
+
+  const rightRound16 = [
+    ["Brasil", "Noruega"],
+    ["México", "Inglaterra"],
+    ["Ganador P86", "Egipto"],
+    ["Suiza", "Ganador P87"],
+  ]
+
+  const BracketMatch = ({ teams, roundMatches, widthClass = "w-36 sm:w-48" }: { teams: string[], roundMatches: MatchWithTeams[], widthClass?: string }) => {
+    const match = getMatchByTeams(teams[0], teams[1], roundMatches)
     return (
-      <div className="flex flex-col gap-1 w-36 sm:w-48 bg-black/70 border border-white/20 p-1.5 rounded-lg backdrop-blur-md shadow-2xl relative z-20 transition-all hover:scale-105 hover:border-polla-neon/50">
+      <div className={`flex flex-col gap-1 ${widthClass} bg-black/70 border border-white/20 p-1.5 rounded-lg backdrop-blur-md shadow-2xl relative z-20 transition-all hover:scale-105 hover:border-polla-neon/50`}>
         {[teams[0], teams[1]].map((teamName, i) => {
           const team = match ? (match.homeTeam.name === teamName ? match.homeTeam : match.awayTeam) : null
           return (
@@ -82,12 +97,14 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
           <div className="flex flex-col justify-around h-full">
             <h3 className="text-white font-black text-center absolute top-4 left-8 text-xl">1/16</h3>
             {leftMatchups.map((teams, i) => (
-               <BracketMatch key={i} teams={teams} />
+               <BracketMatch key={i} teams={teams} roundMatches={r32Matches} />
             ))}
           </div>
           <div className="flex flex-col justify-around h-full py-[56px]">
             <h3 className="text-white font-black text-center absolute top-4 left-[240px] text-xl">1/8</h3>
-            {[1,2,3,4].map(i => <EmptyNode key={`l8-${i}`} />)}
+            {leftRound16.map((teams, i) => (
+               <BracketMatch key={i} teams={teams} roundMatches={r16Matches} widthClass="w-32 sm:w-40" />
+            ))}
           </div>
           <div className="flex flex-col justify-around h-full py-[168px]">
             <h3 className="text-white font-black text-center absolute top-4 left-[300px] text-xl">1/4</h3>
@@ -129,12 +146,14 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
           <div className="flex flex-col justify-around h-full">
             <h3 className="text-white font-black text-center absolute top-4 right-8 text-xl">1/16</h3>
             {rightMatchups.map((teams, i) => (
-               <BracketMatch key={i} teams={teams} />
+               <BracketMatch key={i} teams={teams} roundMatches={r32Matches} />
             ))}
           </div>
           <div className="flex flex-col justify-around h-full py-[56px]">
             <h3 className="text-white font-black text-center absolute top-4 right-[240px] text-xl">1/8</h3>
-            {[1,2,3,4].map(i => <EmptyNode key={`r8-${i}`} />)}
+            {rightRound16.map((teams, i) => (
+               <BracketMatch key={i} teams={teams} roundMatches={r16Matches} widthClass="w-32 sm:w-40" />
+            ))}
           </div>
           <div className="flex flex-col justify-around h-full py-[168px]">
             <h3 className="text-white font-black text-center absolute top-4 right-[300px] text-xl">1/4</h3>

@@ -12,7 +12,7 @@ export default async function PredictionsPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const params = await searchParams
-  const filter = params.filter || 'round32'
+  const filter = params.filter || 'round16'
 
   const session = await auth()
   
@@ -49,10 +49,12 @@ export default async function PredictionsPage({
   })
   const initialR16Ids = r16Predictions.map(p => p.teamId)
 
-  if (filter === 'round32') {
+  if (filter === 'round16') {
+    matches = matches.filter(m => m.round === 'Octavos de Final')
+  } else if (filter === 'round32') {
     matches = matches.filter(m => m.round === '16avos de Final')
   } else if (filter === 'groups') {
-    matches = matches.filter(m => m.round !== '16avos de Final')
+    matches = matches.filter(m => m.round !== '16avos de Final' && m.round !== 'Octavos de Final')
   }
 
   // Group matches by date
@@ -92,6 +94,12 @@ export default async function PredictionsPage({
       <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
 
       <div className="flex flex-wrap gap-2 mb-6">
+        <Link 
+          href="/dashboard/predictions?filter=round16"
+          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'round16' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+        >
+          Octavos de Final
+        </Link>
         <Link 
           href="/dashboard/predictions?filter=round32"
           className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'round32' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}

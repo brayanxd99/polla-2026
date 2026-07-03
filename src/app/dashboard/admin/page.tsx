@@ -7,6 +7,7 @@ import { AdminMatchCard } from "@/components/admin/AdminMatchCard"
 import { AdminTeamCard } from "@/components/admin/AdminTeamCard"
 import { AdminSyncButton } from "@/components/admin/AdminSyncButton"
 import { AdminSeedRound32Button } from "@/components/admin/AdminSeedRound32Button"
+import { AdminSeedRound16Button } from "@/components/admin/AdminSeedRound16Button"
 import { AdminUserCreation } from "@/components/admin/AdminUserCreation"
 import { ShieldAlert, Trophy } from "lucide-react"
 
@@ -68,6 +69,7 @@ export default async function AdminDashboard() {
         </div>
         
         <div className="flex flex-wrap items-center gap-4">
+          <AdminSeedRound16Button />
           <AdminSeedRound32Button />
           <AdminSyncButton />
         </div>
