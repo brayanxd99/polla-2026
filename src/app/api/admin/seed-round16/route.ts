@@ -14,7 +14,10 @@ const ROUND16_MATCHES = [
 ]
 
 async function getOrCreateTeam(name: string): Promise<any> {
-  const code = name.substring(0, 3).toUpperCase()
+  let code = name.substring(0, 3).toUpperCase()
+  if (name === "Ganador P86") code = "P86"
+  if (name === "Ganador P87") code = "P87"
+
   const existing = await prisma.team.findFirst({
     where: { name: name }
   })
