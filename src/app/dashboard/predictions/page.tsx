@@ -102,7 +102,7 @@ export default async function PredictionsPage({
       <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
       
       <QFSelector 
-        teams={teams.filter(t => ['Alemania', 'Estados Unidos', 'España', 'Croacia', 'Francia', 'Nigeria', 'Senegal', 'Uruguay', 'Brasil', 'Inglaterra', 'Argentina', 'Cabo Verde', 'Colombia', 'Ghana', 'Egipto', 'Suiza'].includes(t.name))} 
+        teams={teams.filter(t => t.advancedToR16)} 
         initialSelectedIds={initialQFIds} 
       />
 
