@@ -59,7 +59,7 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
 
   const rightQF = [
     ["Noruega", "Inglaterra"],
-    ["W95", "W96"],
+    ["Argentina", "W96"],
   ]
 
   const BracketMatch = ({ teams, roundMatches, widthClass = "w-36 sm:w-48" }: { teams: string[], roundMatches: MatchWithTeams[], widthClass?: string }) => {
