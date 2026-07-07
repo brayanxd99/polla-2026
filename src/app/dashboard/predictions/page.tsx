@@ -100,12 +100,16 @@ export default async function PredictionsPage({
         </div>
       </div>
 
-      <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
+      {filter === 'round16' && (
+        <Round16Selector teams={teams} initialSelectedIds={initialR16Ids} />
+      )}
       
-      <QFSelector 
-        teams={teams.filter(t => t.advancedToR16)} 
-        initialSelectedIds={initialQFIds} 
-      />
+      {filter === 'qf' && (
+        <QFSelector 
+          teams={teams.filter(t => t.advancedToR16)} 
+          initialSelectedIds={initialQFIds} 
+        />
+      )}
 
       <div className="flex flex-wrap gap-2 mb-6">
         <Link 
