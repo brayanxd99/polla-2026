@@ -56,12 +56,14 @@ export default async function PredictionsPage({
   })
   const initialQFIds = qfPredictions.map(p => p.teamId)
 
-  if (filter === 'round16') {
+  if (filter === 'semifinals') {
+    matches = matches.filter(m => m.round === 'Semifinal')
+  } else if (filter === 'round16') {
     matches = matches.filter(m => m.round === 'Octavos de Final')
   } else if (filter === 'round32') {
     matches = matches.filter(m => m.round === '16avos de Final')
   } else if (filter === 'groups') {
-    matches = matches.filter(m => m.round !== '16avos de Final' && m.round !== 'Octavos de Final')
+    matches = matches.filter(m => m.round !== '16avos de Final' && m.round !== 'Octavos de Final' && m.round !== 'Semifinal')
   }
 
   // Group matches by date
@@ -107,6 +109,12 @@ export default async function PredictionsPage({
       />
 
       <div className="flex flex-wrap gap-2 mb-6">
+        <Link 
+          href="/dashboard/predictions?filter=semifinals"
+          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'semifinals' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+        >
+          Semifinales
+        </Link>
         <Link 
           href="/dashboard/predictions?filter=round16"
           className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'round16' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
