@@ -7,6 +7,7 @@ type MatchWithTeams = Match & { homeTeam: Team, awayTeam: Team }
 export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
   const r32Matches = matches.filter(m => m.round === "16avos de Final")
   const r16Matches = matches.filter(m => m.round === "Octavos de Final")
+  const qfMatches = matches.filter(m => m.round === "Cuartos de Final")
 
   const getMatchByTeams = (t1: string, t2: string, roundMatches: MatchWithTeams[]) => {
     return roundMatches.find(m => 
@@ -49,6 +50,16 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
     ["México", "Inglaterra"],
     ["Ganador P86", "Egipto"],
     ["Suiza", "Ganador P87"],
+  ]
+
+  const leftQF = [
+    ["Francia", "Marruecos"],
+    ["España", "Bélgica"],
+  ]
+
+  const rightQF = [
+    ["Noruega", "Inglaterra"],
+    ["Argentina", "Suiza"],
   ]
 
   const BracketMatch = ({ teams, roundMatches, widthClass = "w-36 sm:w-48" }: { teams: string[], roundMatches: MatchWithTeams[], widthClass?: string }) => {
@@ -108,7 +119,9 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
           </div>
           <div className="flex flex-col justify-around h-full py-[168px]">
             <h3 className="text-white font-black text-center absolute top-4 left-[300px] text-xl">1/4</h3>
-            {[1,2].map(i => <EmptyNode key={`l4-${i}`} />)}
+            {leftQF.map((teams, i) => (
+               <BracketMatch key={i} teams={teams} roundMatches={qfMatches} widthClass="w-28 sm:w-36" />
+            ))}
           </div>
         </div>
 
@@ -157,7 +170,9 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
           </div>
           <div className="flex flex-col justify-around h-full py-[168px]">
             <h3 className="text-white font-black text-center absolute top-4 right-[300px] text-xl">1/4</h3>
-            {[1,2].map(i => <EmptyNode key={`r4-${i}`} />)}
+            {rightQF.map((teams, i) => (
+               <BracketMatch key={i} teams={teams} roundMatches={qfMatches} widthClass="w-28 sm:w-36" />
+            ))}
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ export function QFSelector({ teams, initialSelectedIds }: QFSelectorProps) {
   const [isSaved, setIsSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
-  const isLocked = initialSelectedIds.length > 0
+  const isLocked = true // initialSelectedIds.length > 0
 
   const toggleTeam = (teamId: string) => {
     if (isLocked) return

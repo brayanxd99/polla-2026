@@ -24,7 +24,7 @@ export function Round16Selector({ teams, initialSelectedIds }: Round16SelectorPr
   const [isSaved, setIsSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
-  const isLocked = initialSelectedIds.length > 0
+  const isLocked = true // initialSelectedIds.length > 0
 
   const toggleTeam = (teamId: string) => {
     if (isLocked) return
