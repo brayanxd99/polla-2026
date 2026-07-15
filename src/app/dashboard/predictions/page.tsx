@@ -13,7 +13,7 @@ export default async function PredictionsPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const params = await searchParams
-  const filter = params.filter || 'qf'
+  const filter = params.filter || 'finales'
 
   const session = await auth()
   
@@ -56,7 +56,9 @@ export default async function PredictionsPage({
   })
   const initialQFIds = qfPredictions.map(p => p.teamId)
 
-  if (filter === 'semifinals') {
+  if (filter === 'finales') {
+    matches = matches.filter(m => m.round === 'Final' || m.round === 'Tercer Puesto')
+  } else if (filter === 'semifinals') {
     matches = matches.filter(m => m.round === 'Semifinal')
   } else if (filter === 'qf') {
     matches = matches.filter(m => m.round === 'Cuartos de Final')
@@ -114,6 +116,12 @@ export default async function PredictionsPage({
       )}
 
       <div className="flex flex-wrap gap-2 mb-6">
+        <Link 
+          href="/dashboard/predictions?filter=finales"
+          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'finales' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+        >
+          Finales
+        </Link>
         <Link 
           href="/dashboard/predictions?filter=semifinals"
           className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${filter === 'semifinals' ? 'bg-polla-neon text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}

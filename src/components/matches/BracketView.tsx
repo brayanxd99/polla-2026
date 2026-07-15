@@ -8,6 +8,8 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
   const r32Matches = matches.filter(m => m.round === "16avos de Final")
   const r16Matches = matches.filter(m => m.round === "Octavos de Final")
   const qfMatches = matches.filter(m => m.round === "Cuartos de Final")
+  const finalMatches = matches.filter(m => m.round === "Final")
+  const thirdPlaceMatches = matches.filter(m => m.round === "Tercer Puesto")
 
   const getMatchByTeams = (t1: string, t2: string, roundMatches: MatchWithTeams[]) => {
     return roundMatches.find(m => 
@@ -134,8 +136,14 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
            <div className="flex flex-col items-center gap-8 mt-12 z-20">
              <h3 className="text-white font-black text-2xl tracking-widest">FINAL</h3>
              <div className="flex gap-4">
-               <EmptyNode />
-               <EmptyNode />
+               {finalMatches.length > 0 ? (
+                 <BracketMatch teams={["España", "Argentina"]} roundMatches={finalMatches} widthClass="w-48 sm:w-64" />
+               ) : (
+                 <>
+                   <EmptyNode />
+                   <EmptyNode />
+                 </>
+               )}
              </div>
              
              {/* Trofeo generado con transparencia por mix-blend-screen */}
@@ -147,8 +155,14 @@ export function BracketView({ matches }: { matches: MatchWithTeams[] }) {
              <div className="mt-8 flex flex-col items-center gap-2 z-20">
                <h3 className="text-white font-bold text-sm">3º Y 4º PUESTO</h3>
                <div className="flex gap-2">
-                 <EmptyNode />
-                 <EmptyNode />
+                 {thirdPlaceMatches.length > 0 ? (
+                   <BracketMatch teams={["Francia", "Inglaterra"]} roundMatches={thirdPlaceMatches} widthClass="w-40 sm:w-48" />
+                 ) : (
+                   <>
+                     <EmptyNode />
+                     <EmptyNode />
+                   </>
+                 )}
                </div>
              </div>
            </div>
