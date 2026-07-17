@@ -76,7 +76,7 @@ export function AdminHallOfFameControls({ topUsers }: { topUsers: Winner[] }) {
       )}
 
       {showPreview && (
-        <HallOfFame winners={topUsers} /> // Removed onClose because HallOfFame handles its own close internally
+        <HallOfFame winners={topUsers} onClose={() => setShowPreview(false)} />
       )}
     </div>
   )

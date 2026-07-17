@@ -11,7 +11,7 @@ type Winner = {
   image?: string | null
 }
 
-export function HallOfFame({ winners }: { winners: Winner[] }) {
+export function HallOfFame({ winners, onClose }: { winners: Winner[], onClose?: () => void }) {
   const [isOpen, setIsOpen] = useState(true)
   const [showConfetti, setShowConfetti] = useState(false)
 
@@ -23,7 +23,10 @@ export function HallOfFame({ winners }: { winners: Winner[] }) {
 
   if (!isOpen || !winners || winners.length === 0) return null
 
-  const handleClose = () => setIsOpen(false)
+  const handleClose = () => {
+    setIsOpen(false)
+    if (onClose) onClose()
+  }
 
   // Ensure we have 3 places, padded with empty if needed
   const firstPlace = winners[0]
