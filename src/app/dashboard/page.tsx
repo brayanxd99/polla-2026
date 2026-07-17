@@ -4,6 +4,7 @@ import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { Trophy, Activity, Target, Flame } from "lucide-react"
 import { prisma } from "@/lib/prisma";
+import { HallOfFame } from "@/components/dashboard/HallOfFame";
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -69,8 +70,17 @@ export default async function DashboardPage() {
   // Top 5 only for the mini ranking
   const top5Users = uniqueTopUsers.slice(0, 5);
 
+  // Check if tournament is over (Final match is FINISHED)
+  const finalMatch = await prisma.match.findFirst({
+    where: { round: 'Final' }
+  });
+  const isTournamentOver = finalMatch?.status === 'FINISHED';
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
+      {isTournamentOver && (
+        <HallOfFame winners={uniqueTopUsers.slice(0, 3)} />
+      )}
       <div>
         <h1 className="text-3xl font-bold tracking-tight mb-2">Mi Resumen</h1>
         <p className="text-muted-foreground">Bienvenido a tu panel de control. Aquí puedes ver tu rendimiento.</p>

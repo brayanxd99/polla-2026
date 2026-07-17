@@ -11,6 +11,7 @@ import { AdminSeedRound32Button } from "@/components/admin/AdminSeedRound32Butto
 import { AdminSeedRound16Button } from "@/components/admin/AdminSeedRound16Button"
 import { AdminSeedSemifinalsButton } from "@/components/admin/AdminSeedSemifinalsButton"
 import { AdminUserCreation } from "@/components/admin/AdminUserCreation"
+import { AdminHallOfFameControls } from "@/components/admin/AdminHallOfFameControls"
 import { ShieldAlert, Trophy } from "lucide-react"
 
 export default async function AdminDashboard() {
@@ -54,6 +55,37 @@ export default async function AdminDashboard() {
 
   const participatingUsersCount = usersWithPredictions.filter(u => u._count.predictions > 0).length
 
+  // Calculate Top 3 users for Hall of Fame
+  const topUsersRaw = await prisma.user.findMany({
+    where: { role: 'USER' },
+    orderBy: [
+      { totalPoints: "desc" },
+      { exactMatches: "desc" },
+    ],
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      totalPoints: true,
+    }
+  });
+
+  const uniqueTopUsers = [];
+  const seenNames = new Set();
+  for (const user of topUsersRaw) {
+    const key = user.name || user.id;
+    if (!seenNames.has(key)) {
+      seenNames.add(key);
+      uniqueTopUsers.push(user);
+    }
+  }
+  const top3Users = uniqueTopUsers.slice(0, 3).map(u => ({
+    id: u.id,
+    name: u.name || "Usuario Anónimo",
+    points: u.totalPoints,
+    image: u.image
+  }))
+
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -82,7 +114,11 @@ export default async function AdminDashboard() {
         <AdminUserCreation />
       </div>
 
-      <div className="space-y-6 pt-8">
+      <div className="space-y-6 pt-8 border-t border-white/10">
+        <AdminHallOfFameControls topUsers={top3Users} />
+      </div>
+
+      <div className="space-y-6 pt-8 border-t border-white/10">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
           Partidos Pendientes ({pendingMatches.length})
