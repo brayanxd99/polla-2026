@@ -76,10 +76,17 @@ export default async function DashboardPage() {
   });
   const isTournamentOver = finalMatch?.status === 'FINISHED';
 
+  const mappedTopUsers = uniqueTopUsers.slice(0, 3).map(u => ({
+    id: u.id,
+    name: u.name || "Usuario Anónimo",
+    points: u.totalPoints,
+    image: u.image
+  }))
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       {isTournamentOver && (
-        <HallOfFame winners={uniqueTopUsers.slice(0, 3)} />
+        <HallOfFame winners={mappedTopUsers} />
       )}
       <div>
         <h1 className="text-3xl font-bold tracking-tight mb-2">Mi Resumen</h1>
