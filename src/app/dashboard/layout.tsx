@@ -2,20 +2,16 @@
 
 import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
-import { Trophy, Home, Calendar, List, Settings, LogOut, Menu, X, User as UserIcon } from "lucide-react"
+import { Home, LogOut, Menu, X, User as UserIcon, Wifi } from "lucide-react"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { WelcomeModal } from "@/components/WelcomeModal"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const navItems = [
-    { name: "Dashboard", href: "/dashboard", icon: Home },
-    { name: "Partidos", href: "/dashboard/matches", icon: Calendar },
-    { name: "Mis Pronósticos", href: "/dashboard/predictions", icon: List },
-    { name: "Ranking Global", href: "/dashboard/ranking", icon: Trophy },
+    { name: "Resultados", href: "/dashboard", icon: Home },
   ]
 
   return (
@@ -24,9 +20,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className="hidden md:flex flex-col w-64 glass border-r border-white/5 fixed top-0 left-0 bottom-0 z-40">
         <div className="p-6">
           <Link href="/" className="flex items-center gap-2">
-            <Trophy className="w-8 h-8 text-polla-neon" />
-            <span className="text-2xl font-bold tracking-tight">
-              Polla<span className="text-polla-blue">26</span>
+            <Wifi className="w-8 h-8 text-yellow-400" />
+            <span className="text-xl font-bold tracking-tight">
+              Internet<span className="text-blue-400">Admin</span>
             </span>
           </Link>
         </div>
@@ -46,11 +42,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <div className="p-4 border-t border-white/5">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 mb-2">
-            <div className="w-8 h-8 rounded-full bg-polla-blue/20 flex items-center justify-center">
-              <UserIcon className="w-4 h-4 text-polla-blue" />
+            <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <UserIcon className="w-4 h-4 text-blue-400" />
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-medium text-white truncate">{session?.user?.name || "Usuario"}</p>
+              <p className="text-sm font-medium text-white truncate">{session?.user?.name || "Administrador"}</p>
               <p className="text-xs text-muted-foreground truncate">{session?.user?.email}</p>
             </div>
           </div>
@@ -69,8 +65,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Mobile Header */}
         <header className="md:hidden glass border-b border-white/5 h-16 flex items-center justify-between px-4 sticky top-0 z-30">
           <Link href="/" className="flex items-center gap-2">
-            <Trophy className="w-6 h-6 text-polla-neon" />
-            <span className="font-bold">Polla26</span>
+            <Wifi className="w-6 h-6 text-yellow-400" />
+            <span className="font-bold">InternetAdmin</span>
           </Link>
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -113,9 +109,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
         </div>
       </main>
-
-      {/* Global Welcome Modal */}
-      <WelcomeModal />
     </div>
   )
 }

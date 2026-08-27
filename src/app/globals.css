@@ -58,31 +58,31 @@
   --popover: oklch(0.22 0 0);
   --popover-foreground: oklch(0.985 0 0);
   
-  /* Asturias Yellow */
-  --primary: #ebe301; 
+  /* Survey Theme Yellow (Primary) */
+  --primary: #FFD100; 
   --primary-foreground: oklch(0.1 0 0);
   
-  /* Asturias Yellow (Secondary) */
-  --secondary: #ebe301;
-  --secondary-foreground: oklch(0.1 0 0);
+  /* Survey Theme Blue (Secondary) */
+  --secondary: #003893;
+  --secondary-foreground: oklch(0.985 0 0);
   
   --muted: oklch(0.28 0 0);
   --muted-foreground: oklch(0.7 0 0);
   
-  --accent: oklch(0.28 0 0);
+  --accent: #CE1126; /* Red Accent */
   --accent-foreground: oklch(0.985 0 0);
   
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 10%);
-  --ring: #ebe301;
+  --ring: #FFD100;
   
   --radius: 0.75rem;
 
-  /* Custom Polla Colors (Updated for Asturias) */
-  --polla-neon: #ebe301;
-  --polla-blue: #888888; /* Silver/Grey */
-  --polla-gold: #ebe301; /* Unified with primary */
+  /* Custom Survey Colors */
+  --polla-neon: #FFD100;
+  --polla-blue: #003893; 
+  --polla-gold: #CE1126; /* Red for emphasis */
 }
 
 .dark {
