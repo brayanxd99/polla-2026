@@ -13,15 +13,24 @@ export default function Home() {
     ficha: '',
     instructor: '',
     aprendiz: '',
+    correo: '',
     salon: '',
     network: 'SENA', // Default network
     hasDropped: false,
     isSlow: false,
     novedad: ''
   })
+  const [errorMsg, setErrorMsg] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setErrorMsg('')
+    
+    if (!formData.correo.toLowerCase().endsWith('@sena.edu.co')) {
+      setErrorMsg('El correo debe tener el dominio @sena.edu.co')
+      return
+    }
+
     setIsSubmitting(true)
     
     try {
@@ -37,6 +46,7 @@ export default function Home() {
           ficha: '',
           instructor: '',
           aprendiz: '',
+          correo: '',
           salon: '',
           network: 'SENA',
           hasDropped: false,
@@ -126,16 +136,28 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Número de Salón / Ambiente</label>
+                <label className="text-sm font-medium text-gray-300">Correo SENA (@sena.edu.co)</label>
                 <input 
                   required
-                  type="text" 
+                  type="email" 
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
-                  placeholder="Ej. Salón 201"
-                  value={formData.salon}
-                  onChange={e => setFormData({...formData, salon: e.target.value})}
+                  placeholder="ejemplo@sena.edu.co"
+                  value={formData.correo}
+                  onChange={e => setFormData({...formData, correo: e.target.value})}
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">Número de Salón / Ambiente</label>
+              <input 
+                required
+                type="text" 
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                placeholder="Ej. Salón 201"
+                value={formData.salon}
+                onChange={e => setFormData({...formData, salon: e.target.value})}
+              />
             </div>
 
             <hr className="border-white/10" />
@@ -198,6 +220,12 @@ export default function Home() {
                 onChange={e => setFormData({...formData, novedad: e.target.value})}
               />
             </div>
+
+            {errorMsg && (
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-sm text-center">
+                {errorMsg}
+              </div>
+            )}
 
             <button 
               type="submit"

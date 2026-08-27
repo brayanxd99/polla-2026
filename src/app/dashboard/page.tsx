@@ -158,7 +158,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                     <div>
                       <span className="font-bold text-yellow-400 text-sm">Salón: {r.salon}</span>
                       <p className="text-xs text-gray-400">Ficha: {r.ficha} | Inst: {r.instructor}</p>
-                      <p className="text-xs text-blue-400">Red: {r.network}</p>
+                      <p className="text-xs text-blue-400">Red: {r.network} | Correo: {r.correo}</p>
                     </div>
                     <span className="text-xs text-gray-500">
                       {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
@@ -199,6 +199,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
               <th className="p-3 border border-white/10 font-medium">Red</th>
               <th className="p-3 border border-white/10 font-medium">Instructor</th>
               <th className="p-3 border border-white/10 font-medium">Aprendiz</th>
+              <th className="p-3 border border-white/10 font-medium">Correo</th>
               <th className="p-3 border border-white/10 font-medium">Novedad</th>
             </tr>
           </thead>
@@ -213,6 +214,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 <td className="p-3 border border-white/5 text-blue-400">{r.network}</td>
                 <td className="p-3 border border-white/5">{r.instructor}</td>
                 <td className="p-3 border border-white/5">{r.aprendiz}</td>
+                <td className="p-3 border border-white/5 text-gray-400">{r.correo}</td>
                 <td className="p-3 border border-white/5 text-gray-400 italic">
                   {[r.hasDropped ? 'CAÍDA' : '', r.isSlow ? 'LENTO' : '', r.novedad].filter(Boolean).join(' | ') || 'Sin novedad (OK)'}
                 </td>
