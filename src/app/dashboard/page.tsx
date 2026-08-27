@@ -51,8 +51,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
     })
   }
 
-  // Group by salon to find the most intermittent ones
-  const salonGroups = responses.reduce((acc: any, r: any) => {
+  // Group by salon to find the most intermittent ones (ONLY count those with failures)
+  const failedResponses = responses.filter(r => r.hasDropped || r.isSlow || r.novedad);
+  const salonGroups = failedResponses.reduce((acc: any, r: any) => {
     if (!acc[r.salon]) acc[r.salon] = 0;
     acc[r.salon]++;
     return acc;
