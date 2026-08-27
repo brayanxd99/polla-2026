@@ -167,6 +167,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                   <div className="flex gap-2 mb-2">
                     {r.hasDropped && <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded">Caída</span>}
                     {r.isSlow && <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">Lento</span>}
+                    {!r.hasDropped && !r.isSlow && !r.novedad && (
+                      <span className="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded font-medium">Sin novedad (OK)</span>
+                    )}
                   </div>
                   
                   {r.novedad && (
@@ -210,7 +213,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 <td className="p-3 border border-white/5">{r.instructor}</td>
                 <td className="p-3 border border-white/5">{r.aprendiz}</td>
                 <td className="p-3 border border-white/5 text-gray-400 italic">
-                  {[r.hasDropped ? 'CAÍDA' : '', r.isSlow ? 'LENTO' : '', r.novedad].filter(Boolean).join(' | ')}
+                  {[r.hasDropped ? 'CAÍDA' : '', r.isSlow ? 'LENTO' : '', r.novedad].filter(Boolean).join(' | ') || 'Sin novedad (OK)'}
                 </td>
               </tr>
             ))}
