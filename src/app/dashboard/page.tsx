@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { WifiOff, AlertTriangle, Users, Activity, List } from "lucide-react"
 import { SurveyCharts } from "@/components/admin/SurveyCharts"
 
-export default async function DashboardPage({ searchParams }: { searchParams: { date?: string } }) {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ date?: string }> }) {
   const session = await auth()
   
   // Since we deleted the role check, just ensure they are logged in.
@@ -17,8 +17,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
   let startDate = new Date(today.setHours(0, 0, 0, 0))
   let endDate = new Date(today.setHours(23, 59, 59, 999))
   
-  if (searchParams.date) {
-    const selected = new Date(searchParams.date)
+  const params = await searchParams;
+  if (params.date) {
+    const selected = new Date(params.date)
     startDate = new Date(selected.setHours(0, 0, 0, 0))
     endDate = new Date(selected.setHours(23, 59, 59, 999))
   }
@@ -76,7 +77,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           <input 
             type="date" 
             name="date"
-            defaultValue={searchParams.date || new Date().toISOString().split('T')[0]}
+            defaultValue={params.date || new Date().toISOString().split('T')[0]}
             className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold transition-colors">
