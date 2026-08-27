@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import { WifiOff, AlertTriangle, Users, Activity } from "lucide-react"
+import { WifiOff, AlertTriangle, Users, Activity, List } from "lucide-react"
 import { SurveyCharts } from "@/components/admin/SurveyCharts"
 
 export default async function DashboardPage({ searchParams }: { searchParams: { date?: string } }) {
@@ -31,7 +31,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
   const todayResponses = responses.filter(r => r.createdAt >= startDate && r.createdAt <= endDate)
   
   const droppedCount = todayResponses.filter(r => r.hasDropped).length
-  const issuesCount = todayResponses.filter(r => r.hasIssues).length
   const slowCount = todayResponses.filter(r => r.isSlow).length
 
   // Build weekly chart data (last 7 days)
@@ -48,7 +47,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
       name: d.toLocaleDateString('es-CO', { weekday: 'short' }),
       caidas: dayResponses.filter(r => r.hasDropped).length,
       lento: dayResponses.filter(r => r.isSlow).length,
-      novedad: dayResponses.filter(r => r.hasIssues).length,
       total: dayResponses.length
     })
   }
@@ -88,7 +86,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
 
       {/* Stats Grid for Today */}
       <h2 className="text-xl font-bold text-white mt-8 mb-4">Resumen del Día Seleccionado</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="glass rounded-2xl p-6 border border-white/5 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-20 text-blue-400"><Users className="w-12 h-12" /></div>
           <p className="text-sm font-medium text-gray-400 mb-2">Total Reportes</p>
@@ -103,11 +101,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           <div className="absolute top-0 right-0 p-4 opacity-20 text-yellow-500"><Activity className="w-12 h-12" /></div>
           <p className="text-sm font-medium text-gray-400 mb-2">Internet Lento</p>
           <p className="text-4xl font-bold text-white">{slowCount}</p>
-        </div>
-        <div className="glass rounded-2xl p-6 border border-blue-500/20 relative overflow-hidden group bg-gradient-to-br from-blue-500/5 to-transparent">
-          <div className="absolute top-0 right-0 p-4 opacity-20 text-blue-500"><AlertTriangle className="w-12 h-12" /></div>
-          <p className="text-sm font-medium text-gray-400 mb-2">Otras Novedades</p>
-          <p className="text-4xl font-bold text-white">{issuesCount}</p>
         </div>
       </div>
 
@@ -164,6 +157,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                     <div>
                       <span className="font-bold text-yellow-400 text-sm">Salón: {r.salon}</span>
                       <p className="text-xs text-gray-400">Ficha: {r.ficha} | Inst: {r.instructor}</p>
+                      <p className="text-xs text-blue-400">Red: {r.network}</p>
                     </div>
                     <span className="text-xs text-gray-500">
                       {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
@@ -173,7 +167,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                   <div className="flex gap-2 mb-2">
                     {r.hasDropped && <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded">Caída</span>}
                     {r.isSlow && <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">Lento</span>}
-                    {r.hasIssues && <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded">Novedad</span>}
                   </div>
                   
                   {r.novedad && (
@@ -185,6 +178,44 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           </div>
         </div>
 
+      </div>
+
+      {/* Excel Table Section */}
+      <div className="glass rounded-2xl border border-white/5 p-6 overflow-x-auto mt-8">
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
+          <List className="w-5 h-5 text-blue-400" />
+          Tabla de Datos Completos
+        </h2>
+        <table className="w-full text-left border-collapse min-w-[800px]">
+          <thead>
+            <tr className="bg-white/10 text-gray-300">
+              <th className="p-3 border border-white/10 font-medium">Fecha</th>
+              <th className="p-3 border border-white/10 font-medium">Ficha</th>
+              <th className="p-3 border border-white/10 font-medium">Salón</th>
+              <th className="p-3 border border-white/10 font-medium">Red</th>
+              <th className="p-3 border border-white/10 font-medium">Instructor</th>
+              <th className="p-3 border border-white/10 font-medium">Aprendiz</th>
+              <th className="p-3 border border-white/10 font-medium">Novedad</th>
+            </tr>
+          </thead>
+          <tbody>
+            {responses.map(r => (
+              <tr key={r.id} className="hover:bg-white/5 transition-colors text-sm text-gray-300 border-b border-white/5">
+                <td className="p-3 border border-white/5">
+                  {r.createdAt.toLocaleDateString('es-CO')} {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
+                </td>
+                <td className="p-3 border border-white/5">{r.ficha}</td>
+                <td className="p-3 border border-white/5 font-bold text-yellow-400">{r.salon}</td>
+                <td className="p-3 border border-white/5 text-blue-400">{r.network}</td>
+                <td className="p-3 border border-white/5">{r.instructor}</td>
+                <td className="p-3 border border-white/5">{r.aprendiz}</td>
+                <td className="p-3 border border-white/5 text-gray-400 italic">
+                  {[r.hasDropped ? 'CAÍDA' : '', r.isSlow ? 'LENTO' : '', r.novedad].filter(Boolean).join(' | ')}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

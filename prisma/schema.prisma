@@ -73,9 +73,9 @@ model SurveyResponse {
   instructor  String
   aprendiz    String
   salon       String
+  network     String
   
   hasDropped  Boolean
-  hasIssues   Boolean
   isSlow      Boolean
   novedad     String?
 }

@@ -14,8 +14,8 @@ export default function Home() {
     instructor: '',
     aprendiz: '',
     salon: '',
+    network: 'SENA', // Default network
     hasDropped: false,
-    hasIssues: false,
     isSlow: false,
     novedad: ''
   })
@@ -38,8 +38,8 @@ export default function Home() {
           instructor: '',
           aprendiz: '',
           salon: '',
+          network: 'SENA',
           hasDropped: false,
-          hasIssues: false,
           isSlow: false,
           novedad: ''
         })
@@ -175,23 +175,18 @@ export default function Home() {
                   <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.isSlow ? 'bg-yellow-500' : 'bg-gray-700'}`}></label>
                 </div>
               </label>
+            </div>
 
-              <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${formData.hasIssues ? 'bg-blue-500/20 text-blue-500' : 'bg-gray-800 text-gray-400'}`}>
-                    <AlertTriangle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-white font-medium">¿Presentó otra novedad?</div>
-                    <div className="text-xs text-gray-400">Bloqueos de páginas, intermitencia, etc.</div>
-                  </div>
-                </div>
-                <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.hasIssues} onChange={e => setFormData({...formData, hasIssues: e.target.checked})} style={{ transform: formData.hasIssues ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.hasIssues ? '#3B82F6' : '#374151' }}/>
-                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.hasIssues ? 'bg-blue-500' : 'bg-gray-700'}`}></label>
-                </div>
-              </label>
-
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">Red a la que estás conectado</label>
+              <select 
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                value={formData.network}
+                onChange={e => setFormData({...formData, network: e.target.value})}
+              >
+                <option value="SENA" className="bg-gray-800">SENA</option>
+                <option value="FUH" className="bg-gray-800">FUH</option>
+              </select>
             </div>
 
             <div className="space-y-2">
