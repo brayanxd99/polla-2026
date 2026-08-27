@@ -72,9 +72,10 @@ model SurveyResponse {
   ficha       String
   instructor  String
   aprendiz    String
+  salon       String
   
   hasDropped  Boolean
   hasIssues   Boolean
   isSlow      Boolean
-  comments    String?
+  novedad     String?
 }

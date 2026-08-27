@@ -13,10 +13,11 @@ export default function Home() {
     ficha: '',
     instructor: '',
     aprendiz: '',
+    salon: '',
     hasDropped: false,
     hasIssues: false,
     isSlow: false,
-    comments: ''
+    novedad: ''
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,10 +37,11 @@ export default function Home() {
           ficha: '',
           instructor: '',
           aprendiz: '',
+          salon: '',
           hasDropped: false,
           hasIssues: false,
           isSlow: false,
-          comments: ''
+          novedad: ''
         })
         setTimeout(() => setIsSuccess(false), 5000)
       }
@@ -111,16 +113,29 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Nombre del Aprendiz</label>
-              <input 
-                required
-                type="text" 
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
-                placeholder="Tu nombre completo"
-                value={formData.aprendiz}
-                onChange={e => setFormData({...formData, aprendiz: e.target.value})}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Nombre del Aprendiz</label>
+                <input 
+                  required
+                  type="text" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                  placeholder="Tu nombre completo"
+                  value={formData.aprendiz}
+                  onChange={e => setFormData({...formData, aprendiz: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Número de Salón / Ambiente</label>
+                <input 
+                  required
+                  type="text" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                  placeholder="Ej. Salón 201"
+                  value={formData.salon}
+                  onChange={e => setFormData({...formData, salon: e.target.value})}
+                />
+              </div>
             </div>
 
             <hr className="border-white/10" />
@@ -180,12 +195,12 @@ export default function Home() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Comentarios Adicionales (Opcional)</label>
+              <label className="text-sm font-medium text-gray-300">Novedad / Comentarios Adicionales (Opcional)</label>
               <textarea 
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all resize-none h-24"
                 placeholder="Ej. No carga la plataforma Territorium..."
-                value={formData.comments}
-                onChange={e => setFormData({...formData, comments: e.target.value})}
+                value={formData.novedad}
+                onChange={e => setFormData({...formData, novedad: e.target.value})}
               />
             </div>
 

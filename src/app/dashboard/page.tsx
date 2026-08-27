@@ -53,6 +53,17 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
     })
   }
 
+  // Group by salon to find the most intermittent ones
+  const salonGroups = responses.reduce((acc: any, r: any) => {
+    if (!acc[r.salon]) acc[r.salon] = 0;
+    acc[r.salon]++;
+    return acc;
+  }, {});
+
+  const topSalones = Object.entries(salonGroups)
+    .sort((a: any, b: any) => b[1] - a[1])
+    .slice(0, 5); // Top 5 worst
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -102,17 +113,43 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
         
-        {/* Charts */}
-        <div className="lg:col-span-2 glass rounded-2xl border border-white/5 p-6">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
-            <Activity className="w-5 h-5 text-yellow-400" />
-            Tendencia Semanal
-          </h2>
-          <SurveyCharts data={chartData} />
+        {/* Charts & Ranking */}
+        <div className="lg:col-span-2 space-y-8">
+          <div className="glass rounded-2xl border border-white/5 p-6">
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
+              <Activity className="w-5 h-5 text-yellow-400" />
+              Tendencia Semanal
+            </h2>
+            <SurveyCharts data={chartData} />
+          </div>
+
+          <div className="glass rounded-2xl border border-white/5 p-6">
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
+              <AlertTriangle className="w-5 h-5 text-orange-400" />
+              Salones con más fallas (Histórico)
+            </h2>
+            <div className="space-y-4">
+              {topSalones.length === 0 ? (
+                <div className="text-gray-500 text-sm">No hay reportes suficientes.</div>
+              ) : (
+                topSalones.map((item, i) => (
+                  <div key={item[0]} className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <div className="flex items-center gap-4">
+                      <span className="text-xl font-bold text-gray-400">#{i + 1}</span>
+                      <span className="text-lg text-white font-medium">{item[0]}</span>
+                    </div>
+                    <span className="text-yellow-400 font-bold bg-yellow-400/10 px-3 py-1 rounded-full">
+                      {item[1]} reportes
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Latest Comments */}
-        <div className="glass rounded-2xl border border-white/5 p-6 flex flex-col h-full max-h-[500px]">
+        <div className="glass rounded-2xl border border-white/5 p-6 flex flex-col h-full max-h-[800px]">
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
             <AlertTriangle className="w-5 h-5 text-red-400" />
             Últimos Reportes (Día)
@@ -125,8 +162,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 <div key={r.id} className="bg-white/5 border border-white/5 rounded-xl p-4">
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <span className="font-bold text-yellow-400 text-sm">Ficha: {r.ficha}</span>
-                      <p className="text-xs text-gray-400">Inst: {r.instructor}</p>
+                      <span className="font-bold text-yellow-400 text-sm">Salón: {r.salon}</span>
+                      <p className="text-xs text-gray-400">Ficha: {r.ficha} | Inst: {r.instructor}</p>
                     </div>
                     <span className="text-xs text-gray-500">
                       {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
@@ -139,8 +176,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                     {r.hasIssues && <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded">Novedad</span>}
                   </div>
                   
-                  {r.comments && (
-                    <p className="text-sm text-gray-300 bg-black/20 p-2 rounded italic">"{r.comments}"</p>
+                  {r.novedad && (
+                    <p className="text-sm text-gray-300 bg-black/20 p-2 rounded italic">"{r.novedad}"</p>
                   )}
                 </div>
               ))
