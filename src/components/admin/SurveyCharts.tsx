@@ -19,7 +19,7 @@ export function SurveyCharts({ data }: { data: any[] }) {
           />
           <Legend />
           <Bar dataKey="caidas" name="Caídas" stackId="a" fill="#EF4444" radius={[0, 0, 4, 4]} />
-          <Bar dataKey="lento" name="Lento" stackId="a" fill="#EAB308" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="intermitencia" name="Intermitencias" stackId="a" fill="#EAB308" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

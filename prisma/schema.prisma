@@ -76,7 +76,8 @@ model SurveyResponse {
   salon       String
   network     String
   
-  hasDropped  Boolean
-  isSlow      Boolean
-  novedad     String?
+  seHaCaido     Boolean
+  calificacion  String   // "Bueno", "Regular", "Malo"
+  intermitencia Boolean
+  novedad       String?
 }

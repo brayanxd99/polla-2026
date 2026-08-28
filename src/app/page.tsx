@@ -16,8 +16,9 @@ export default function Home() {
     correo: '',
     salon: '',
     network: 'SENA', // Default network
-    hasDropped: false,
-    isSlow: false,
+    seHaCaido: false,
+    calificacion: 'Bueno',
+    intermitencia: false,
     novedad: ''
   })
   const [errorMsg, setErrorMsg] = useState('')
@@ -49,8 +50,9 @@ export default function Home() {
           correo: '',
           salon: '',
           network: 'SENA',
-          hasDropped: false,
-          isSlow: false,
+          seHaCaido: false,
+          calificacion: 'Bueno',
+          intermitencia: false,
           novedad: ''
         })
         setTimeout(() => setIsSuccess(false), 5000)
@@ -168,35 +170,46 @@ export default function Home() {
               
               <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${formData.hasDropped ? 'bg-red-500/20 text-red-500' : 'bg-gray-800 text-gray-400'}`}>
+                  <div className={`p-2 rounded-lg ${formData.seHaCaido ? 'bg-red-500/20 text-red-500' : 'bg-gray-800 text-gray-400'}`}>
                     <WifiOff className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-white font-medium">¿Se ha caído el internet?</div>
-                    <div className="text-xs text-gray-400">Pérdida total de conexión</div>
+                    <div className="text-white font-medium">¿Se ha caído el internet en el día?</div>
                   </div>
                 </div>
                 <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.hasDropped} onChange={e => setFormData({...formData, hasDropped: e.target.checked})} style={{ transform: formData.hasDropped ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.hasDropped ? '#EF4444' : '#374151' }}/>
-                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.hasDropped ? 'bg-red-500' : 'bg-gray-700'}`}></label>
+                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.seHaCaido} onChange={e => setFormData({...formData, seHaCaido: e.target.checked})} style={{ transform: formData.seHaCaido ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.seHaCaido ? '#EF4444' : '#374151' }}/>
+                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.seHaCaido ? 'bg-red-500' : 'bg-gray-700'}`}></label>
                 </div>
               </label>
 
               <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${formData.isSlow ? 'bg-yellow-500/20 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
+                  <div className={`p-2 rounded-lg ${formData.intermitencia ? 'bg-yellow-500/20 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
                     <AlertTriangle className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-white font-medium">¿Está muy lento?</div>
-                    <div className="text-xs text-gray-400">Tarda mucho en cargar las páginas</div>
+                    <div className="text-white font-medium">¿El internet ha presentado intermitencia?</div>
                   </div>
                 </div>
                 <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.isSlow} onChange={e => setFormData({...formData, isSlow: e.target.checked})} style={{ transform: formData.isSlow ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.isSlow ? '#EAB308' : '#374151' }}/>
-                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.isSlow ? 'bg-yellow-500' : 'bg-gray-700'}`}></label>
+                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.intermitencia} onChange={e => setFormData({...formData, intermitencia: e.target.checked})} style={{ transform: formData.intermitencia ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.intermitencia ? '#EAB308' : '#374151' }}/>
+                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.intermitencia ? 'bg-yellow-500' : 'bg-gray-700'}`}></label>
                 </div>
               </label>
+
+              <div className="p-4 rounded-xl border border-white/10 bg-white/5">
+                <label className="block text-white font-medium mb-3">¿Qué tan bueno le ha parecido el internet el día de hoy?</label>
+                <select 
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                  value={formData.calificacion}
+                  onChange={e => setFormData({...formData, calificacion: e.target.value})}
+                >
+                  <option value="Bueno" className="bg-neutral-900 text-white">Bueno</option>
+                  <option value="Regular" className="bg-neutral-900 text-white">Regular</option>
+                  <option value="Malo" className="bg-neutral-900 text-white">Malo</option>
+                </select>
+              </div>
             </div>
 
             <div className="space-y-2">

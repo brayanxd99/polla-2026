@@ -5,9 +5,9 @@ export async function POST(req: Request) {
   try {
     const data = await req.json()
     
-    const { ficha, instructor, aprendiz, correo, salon, network, hasDropped, isSlow, novedad } = data
+    const { ficha, instructor, aprendiz, correo, salon, network, seHaCaido, calificacion, intermitencia, novedad } = data
 
-    if (!ficha || !instructor || !aprendiz || !correo || !salon) {
+    if (!ficha || !instructor || !aprendiz || !correo || !salon || !calificacion) {
       return NextResponse.json({ error: "Faltan datos obligatorios" }, { status: 400 })
     }
 
@@ -23,8 +23,9 @@ export async function POST(req: Request) {
         correo,
         salon,
         network,
-        hasDropped,
-        isSlow,
+        seHaCaido: Boolean(seHaCaido),
+        calificacion,
+        intermitencia: Boolean(intermitencia),
         novedad
       }
     })

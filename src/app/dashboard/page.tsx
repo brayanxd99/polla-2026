@@ -32,8 +32,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     // Filter current day stats
     const todayResponses = responses.filter(r => r.createdAt >= startDate && r.createdAt <= endDate)
     
-    const droppedCount = todayResponses.filter(r => r.hasDropped).length
-    const slowCount = todayResponses.filter(r => r.isSlow).length
+    const droppedCount = todayResponses.filter(r => r.seHaCaido).length
+    const intermitenteCount = todayResponses.filter(r => r.intermitencia).length
 
     // Build weekly chart data (last 7 days)
     const chartData = []
@@ -47,14 +47,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       
       chartData.push({
         name: d.toLocaleDateString('es-CO', { weekday: 'short' }),
-        caidas: dayResponses.filter(r => r.hasDropped).length,
-        lento: dayResponses.filter(r => r.isSlow).length,
+        caidas: dayResponses.filter(r => r.seHaCaido).length,
+        intermitencia: dayResponses.filter(r => r.intermitencia).length,
         total: dayResponses.length
       })
     }
 
     // Group by salon to find the most intermittent ones (ONLY count those with failures)
-    const failedResponses = responses.filter(r => r.hasDropped || r.isSlow || r.novedad);
+    const failedResponses = responses.filter(r => r.seHaCaido || r.intermitencia || r.calificacion === 'Malo' || r.calificacion === 'Regular' || r.novedad);
     const salonGroups = failedResponses.reduce((acc: any, r: any) => {
       if (!acc[r.salon]) acc[r.salon] = 0;
       acc[r.salon]++;
@@ -102,8 +102,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           </div>
           <div className="glass rounded-2xl p-6 border border-yellow-500/20 relative overflow-hidden group bg-gradient-to-br from-yellow-500/5 to-transparent">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-yellow-500"><Activity className="w-12 h-12" /></div>
-            <p className="text-sm font-medium text-gray-400 mb-2">Internet Lento</p>
-            <p className="text-4xl font-bold text-white">{slowCount}</p>
+            <p className="text-sm font-medium text-gray-400 mb-2">Intermitencias</p>
+            <p className="text-4xl font-bold text-white">{intermitenteCount}</p>
           </div>
         </div>
 
@@ -167,10 +167,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                       </span>
                     </div>
                     
-                    <div className="flex gap-2 mb-2">
-                      {r.hasDropped && <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded">Caída</span>}
-                      {r.isSlow && <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">Lento</span>}
-                      {!r.hasDropped && !r.isSlow && !r.novedad && (
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                      <span className={`text-xs px-2 py-1 rounded ${r.calificacion === 'Bueno' ? 'bg-green-500/20 text-green-400' : r.calificacion === 'Regular' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>Calidad: {r.calificacion}</span>
+                      {r.seHaCaido && <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded">Caída</span>}
+                      {r.intermitencia && <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">Intermitente</span>}
+                      {!r.seHaCaido && !r.intermitencia && !r.novedad && r.calificacion === 'Bueno' && (
                         <span className="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded font-medium">Sin novedad (OK)</span>
                       )}
                     </div>
@@ -218,7 +219,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   <td className="p-3 border border-white/5">{r.aprendiz}</td>
                   <td className="p-3 border border-white/5 text-gray-400">{r.correo}</td>
                   <td className="p-3 border border-white/5 text-gray-400 italic">
-                    {[r.hasDropped ? 'CAÍDA' : '', r.isSlow ? 'LENTO' : '', r.novedad].filter(Boolean).join(' | ') || 'Sin novedad (OK)'}
+                    {[r.seHaCaido ? 'CAÍDA' : '', r.intermitencia ? 'INTERMITENTE' : '', `Calidad: ${r.calificacion}`, r.novedad].filter(Boolean).join(' | ') || 'Sin novedad (OK)'}
                   </td>
                 </tr>
               ))}
