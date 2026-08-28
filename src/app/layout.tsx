@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Polla Futbolera 2026 - Pronósticos Deportivos Premium",
-  description: "Plataforma moderna para realizar pronósticos del Mundial 2026. Compite con amigos, suma puntos y lidera el ranking.",
+  title: "Encuesta de Internet - Horizonte",
+  description: "Monitor de rendimiento y calidad de conexión a Internet.",
 };
 
 export default function RootLayout({
