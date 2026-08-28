@@ -180,50 +180,95 @@ export default function Home() {
             <hr className="border-white/10" />
 
             {/* Questions */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold text-white mb-4">Estado de la Conexión</h3>
+            <div className="space-y-8">
+              <h3 className="text-xl font-bold text-white border-b border-white/10 pb-2">Estado de la conexión</h3>
               
-              <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${formData.seHaCaido ? 'bg-red-500/20 text-red-500' : 'bg-gray-800 text-gray-400'}`}>
-                    <WifiOff className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-white font-medium">¿Se ha caído el internet en el día?</div>
-                  </div>
+              {/* Question 1 */}
+              <div className="space-y-4">
+                <p className="text-white font-medium text-lg">1. ¿Se ha caído la conexión a Internet el día de hoy?</p>
+                <div className="flex flex-col gap-3 pl-5">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative flex items-center justify-center w-5 h-5">
+                      <input 
+                        type="radio" 
+                        name="seHaCaido"
+                        className="peer appearance-none w-5 h-5 rounded-full border-2 border-gray-400 checked:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 transition-all cursor-pointer"
+                        checked={formData.seHaCaido === true}
+                        onChange={() => setFormData({...formData, seHaCaido: true})}
+                      />
+                      <div className="absolute w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                    <span className="text-gray-300 group-hover:text-white transition-colors">Sí</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative flex items-center justify-center w-5 h-5">
+                      <input 
+                        type="radio" 
+                        name="seHaCaido"
+                        className="peer appearance-none w-5 h-5 rounded-full border-2 border-gray-400 checked:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 transition-all cursor-pointer"
+                        checked={formData.seHaCaido === false}
+                        onChange={() => setFormData({...formData, seHaCaido: false})}
+                      />
+                      <div className="absolute w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                    <span className="text-gray-300 group-hover:text-white transition-colors">No</span>
+                  </label>
                 </div>
-                <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.seHaCaido} onChange={e => setFormData({...formData, seHaCaido: e.target.checked})} style={{ transform: formData.seHaCaido ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.seHaCaido ? '#EF4444' : '#374151' }}/>
-                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.seHaCaido ? 'bg-red-500' : 'bg-gray-700'}`}></label>
-                </div>
-              </label>
+              </div>
 
-              <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${formData.intermitencia ? 'bg-yellow-500/20 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
-                    <AlertTriangle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-white font-medium">¿El internet ha presentado intermitencia?</div>
-                  </div>
+              {/* Question 2 */}
+              <div className="space-y-4">
+                <p className="text-white font-medium text-lg">2. ¿La conexión a Internet ha presentado intermitencias el día de hoy?</p>
+                <div className="flex flex-col gap-3 pl-5">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative flex items-center justify-center w-5 h-5">
+                      <input 
+                        type="radio" 
+                        name="intermitencia"
+                        className="peer appearance-none w-5 h-5 rounded-full border-2 border-gray-400 checked:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 transition-all cursor-pointer"
+                        checked={formData.intermitencia === true}
+                        onChange={() => setFormData({...formData, intermitencia: true})}
+                      />
+                      <div className="absolute w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                    <span className="text-gray-300 group-hover:text-white transition-colors">Sí</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative flex items-center justify-center w-5 h-5">
+                      <input 
+                        type="radio" 
+                        name="intermitencia"
+                        className="peer appearance-none w-5 h-5 rounded-full border-2 border-gray-400 checked:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 transition-all cursor-pointer"
+                        checked={formData.intermitencia === false}
+                        onChange={() => setFormData({...formData, intermitencia: false})}
+                      />
+                      <div className="absolute w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                    <span className="text-gray-300 group-hover:text-white transition-colors">No</span>
+                  </label>
                 </div>
-                <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                  <input type="checkbox" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" checked={formData.intermitencia} onChange={e => setFormData({...formData, intermitencia: e.target.checked})} style={{ transform: formData.intermitencia ? 'translateX(100%)' : 'translateX(0)', borderColor: formData.intermitencia ? '#EAB308' : '#374151' }}/>
-                  <label className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${formData.intermitencia ? 'bg-yellow-500' : 'bg-gray-700'}`}></label>
-                </div>
-              </label>
+              </div>
 
-              <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-                <label className="block text-white font-medium mb-3">¿Qué tan bueno le ha parecido el internet el día de hoy?</label>
-                <select 
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
-                  value={formData.calificacion}
-                  onChange={e => setFormData({...formData, calificacion: e.target.value})}
-                >
-                  <option value="Bueno" className="bg-neutral-900 text-white">Bueno</option>
-                  <option value="Regular" className="bg-neutral-900 text-white">Regular</option>
-                  <option value="Malo" className="bg-neutral-900 text-white">Malo</option>
-                </select>
+              {/* Question 3 */}
+              <div className="space-y-4">
+                <p className="text-white font-medium text-lg">3. ¿Cómo ha sido la conexión a Internet el día de hoy?</p>
+                <div className="flex flex-col gap-3 pl-5">
+                  {['Excelente', 'Buena', 'Regular', 'Mala', 'Muy mala'].map((option) => (
+                    <label key={option} className="flex items-center gap-3 cursor-pointer group">
+                      <div className="relative flex items-center justify-center w-5 h-5">
+                        <input 
+                          type="radio" 
+                          name="calificacion"
+                          className="peer appearance-none w-5 h-5 rounded-full border-2 border-gray-400 checked:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 transition-all cursor-pointer"
+                          checked={formData.calificacion === option}
+                          onChange={() => setFormData({...formData, calificacion: option})}
+                        />
+                        <div className="absolute w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
+                      <span className="text-gray-300 group-hover:text-white transition-colors">{option}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 
