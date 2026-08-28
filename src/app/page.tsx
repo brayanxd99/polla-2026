@@ -22,11 +22,25 @@ export default function Home() {
     novedad: ''
   })
   const [errorMsg, setErrorMsg] = useState('')
+  const [showPrivacy, setShowPrivacy] = useState(false)
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+
+  const handleEmailBlur = () => {
+    if (formData.correo.length > 0 && !privacyAccepted) {
+      setShowPrivacy(true)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setErrorMsg('')
     
+    if (!privacyAccepted) {
+      setErrorMsg('Debes aceptar el tratamiento de datos personales para continuar.')
+      setShowPrivacy(true)
+      return
+    }
+
     if (!formData.correo.toLowerCase().endsWith('@sena.edu.co')) {
       setErrorMsg('El correo debe tener el dominio @sena.edu.co')
       return
@@ -146,6 +160,7 @@ export default function Home() {
                   placeholder="ejemplo@sena.edu.co"
                   value={formData.correo}
                   onChange={e => setFormData({...formData, correo: e.target.value})}
+                  onBlur={handleEmailBlur}
                 />
               </div>
             </div>
@@ -248,10 +263,44 @@ export default function Home() {
               <Send className="w-5 h-5" />
               {isSubmitting ? 'Enviando...' : 'Enviar Reporte Diario'}
             </button>
-
           </form>
         )}
       </motion.div>
+
+      {/* Modal de Privacidad */}
+      {showPrivacy && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-neutral-900 border border-white/10 p-6 sm:p-8 rounded-2xl max-w-md w-full shadow-2xl relative">
+            <h2 className="text-xl font-bold text-white mb-4">Autorización de tratamiento de datos personales</h2>
+            <p className="text-gray-300 text-sm leading-relaxed mb-6 text-justify">
+              Autorizo a FUNDACION UNIVERSITARIA HORIZONTE para recolectar y tratar mi dirección de correo electrónico, exclusivamente para efectos de identificación, seguimiento y gestión de la presente encuesta relacionada con la prestación del servicio de Internet en Horizonte, de conformidad con la Ley 1581 de 2012.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button 
+                onClick={() => {
+                  setShowPrivacy(false)
+                  if (!privacyAccepted) {
+                    setFormData({...formData, correo: ''}) // Clear email if they cancel
+                  }
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={() => {
+                  setPrivacyAccepted(true)
+                  setShowPrivacy(false)
+                  setErrorMsg('')
+                }}
+                className="px-6 py-2 text-sm font-bold bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg transition-colors shadow-lg shadow-yellow-500/20"
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="mt-8 text-gray-500 text-sm pb-8 z-10">
         Para ver los resultados, ingresa como <Link href="/login" className="text-blue-400 hover:underline">Administrador</Link>
