@@ -13,17 +13,18 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       redirect("/login")
     }
 
-    // Parse date filter
-    const today = new Date()
-    let startDate = new Date(today.setHours(0, 0, 0, 0))
-    let endDate = new Date(today.setHours(23, 59, 59, 999))
+    // Use Colombia timezone for "today" by default
+    const nowBogota = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Bogota"}));
+    const defaultDateStr = nowBogota.toISOString().split('T')[0]
     
     const params = await searchParams || {};
-    if (params.date) {
-      const selected = new Date(params.date)
-      startDate = new Date(selected.setHours(0, 0, 0, 0))
-      endDate = new Date(selected.setHours(23, 59, 59, 999))
-    }
+    const targetDateStr = params.date || defaultDateStr; // e.g. '2026-09-01'
+    
+    // Create UTC boundaries for the Bogota target date
+    // 00:00:00 Bogota = 05:00:00 UTC
+    // 23:59:59 Bogota = 04:59:59 UTC next day
+    const startDate = new Date(`${targetDateStr}T00:00:00.000-05:00`)
+    const endDate = new Date(`${targetDateStr}T23:59:59.999-05:00`)
 
     const responses = await prisma.surveyResponse.findMany({
       orderBy: { createdAt: 'desc' }
@@ -82,7 +83,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <input 
               type="date" 
               name="date"
-              defaultValue={params?.date || new Date().toISOString().split('T')[0]}
+              defaultValue={targetDateStr}
               className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
             <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold transition-colors">

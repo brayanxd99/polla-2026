@@ -17,7 +17,7 @@ export default function Home() {
     salon: '',
     network: 'SENA', // Default network
     seHaCaido: false,
-    calificacion: 'Bueno',
+    calificacion: 'Buena',
     intermitencia: false,
     novedad: ''
   })
@@ -65,11 +65,14 @@ export default function Home() {
           salon: '',
           network: 'SENA',
           seHaCaido: false,
-          calificacion: 'Bueno',
+          calificacion: 'Buena',
           intermitencia: false,
           novedad: ''
         })
         setTimeout(() => setIsSuccess(false), 5000)
+      } else {
+        const errData = await res.json()
+        setErrorMsg(errData.error || 'Ocurrió un error al enviar el reporte. Por favor, intenta de nuevo.')
       }
     } catch (error) {
       console.error(error)
