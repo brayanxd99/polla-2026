@@ -18,8 +18,10 @@ export function SurveyCharts({ data }: { data: any[] }) {
             itemStyle={{ color: '#fff' }}
           />
           <Legend />
-          <Bar dataKey="caidas" name="Caídas" stackId="a" fill="#EF4444" radius={[0, 0, 4, 4]} />
-          <Bar dataKey="intermitencia" name="Intermitencias" stackId="a" fill="#EAB308" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="sinNovedad" name="Sin Novedad (OK)" stackId="a" fill="#10B981" radius={[0, 0, 0, 0]} />
+          <Bar dataKey="buenas" name="Buenas" stackId="a" fill="#22C55E" radius={[0, 0, 0, 0]} />
+          <Bar dataKey="intermitencia" name="Intermitencias" stackId="a" fill="#EAB308" radius={[0, 0, 0, 0]} />
+          <Bar dataKey="caidas" name="Caídas" stackId="a" fill="#EF4444" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

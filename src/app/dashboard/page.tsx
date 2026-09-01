@@ -34,6 +34,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     
     const droppedCount = todayResponses.filter(r => r.seHaCaido).length
     const intermitenteCount = todayResponses.filter(r => r.intermitencia).length
+    const buenaCount = todayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Excelente').length
+    const sinNovedadCount = todayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Excelente') && !r.novedad).length
 
     // Build weekly chart data (last 7 days)
     const chartData = []
@@ -49,12 +51,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         name: d.toLocaleDateString('es-CO', { weekday: 'short' }),
         caidas: dayResponses.filter(r => r.seHaCaido).length,
         intermitencia: dayResponses.filter(r => r.intermitencia).length,
+        buenas: dayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Excelente').length,
+        sinNovedad: dayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Excelente') && !r.novedad).length,
         total: dayResponses.length
       })
     }
 
     // Group by salon to find the most intermittent ones (ONLY count those with failures)
-    const failedResponses = responses.filter(r => r.seHaCaido || r.intermitencia || r.calificacion === 'Malo' || r.calificacion === 'Regular' || r.novedad);
+    const failedResponses = responses.filter(r => r.seHaCaido || r.intermitencia || r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Regular' || r.novedad);
     const salonGroups = failedResponses.reduce((acc: any, r: any) => {
       if (!acc[r.salon]) acc[r.salon] = 0;
       acc[r.salon]++;
@@ -89,21 +93,31 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
         {/* Stats Grid for Today */}
         <h2 className="text-xl font-bold text-white mt-8 mb-4">Resumen del Día Seleccionado</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <div className="glass rounded-2xl p-6 border border-white/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-blue-400"><Users className="w-12 h-12" /></div>
-            <p className="text-sm font-medium text-gray-400 mb-2">Total Reportes</p>
-            <p className="text-4xl font-bold text-white">{todayResponses.length}</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">Total Reportes</p>
+            <p className="text-3xl font-bold text-white">{todayResponses.length}</p>
           </div>
-          <div className="glass rounded-2xl p-6 border border-red-500/20 relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent">
-            <div className="absolute top-0 right-0 p-4 opacity-20 text-red-500"><WifiOff className="w-12 h-12" /></div>
-            <p className="text-sm font-medium text-gray-400 mb-2">Caídas Totales</p>
-            <p className="text-4xl font-bold text-white">{droppedCount}</p>
+          <div className="glass rounded-2xl p-6 border border-green-500/20 relative overflow-hidden group bg-gradient-to-br from-green-500/5 to-transparent">
+            <div className="absolute top-0 right-0 p-4 opacity-20 text-green-500"><Activity className="w-12 h-12" /></div>
+            <p className="text-xs font-medium text-gray-400 mb-2">Conexión Buena</p>
+            <p className="text-3xl font-bold text-white">{buenaCount}</p>
+          </div>
+          <div className="glass rounded-2xl p-6 border border-emerald-500/20 relative overflow-hidden group bg-gradient-to-br from-emerald-500/5 to-transparent">
+            <div className="absolute top-0 right-0 p-4 opacity-20 text-emerald-500"><Users className="w-12 h-12" /></div>
+            <p className="text-xs font-medium text-gray-400 mb-2">Sin Novedad (OK)</p>
+            <p className="text-3xl font-bold text-white">{sinNovedadCount}</p>
           </div>
           <div className="glass rounded-2xl p-6 border border-yellow-500/20 relative overflow-hidden group bg-gradient-to-br from-yellow-500/5 to-transparent">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-yellow-500"><Activity className="w-12 h-12" /></div>
-            <p className="text-sm font-medium text-gray-400 mb-2">Intermitencias</p>
-            <p className="text-4xl font-bold text-white">{intermitenteCount}</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">Intermitencias</p>
+            <p className="text-3xl font-bold text-white">{intermitenteCount}</p>
+          </div>
+          <div className="glass rounded-2xl p-6 border border-red-500/20 relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent">
+            <div className="absolute top-0 right-0 p-4 opacity-20 text-red-500"><WifiOff className="w-12 h-12" /></div>
+            <p className="text-xs font-medium text-gray-400 mb-2">Caídas Totales</p>
+            <p className="text-3xl font-bold text-white">{droppedCount}</p>
           </div>
         </div>
 
@@ -207,7 +221,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </tr>
             </thead>
             <tbody>
-              {responses.map(r => (
+              {todayResponses.map(r => (
                 <tr key={r.id} className="hover:bg-white/5 transition-colors text-sm text-gray-300 border-b border-white/5">
                   <td className="p-3 border border-white/5">
                     {r.createdAt.toLocaleDateString('es-CO')} {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
