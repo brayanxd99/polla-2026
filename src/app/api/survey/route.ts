@@ -11,7 +11,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Faltan datos obligatorios" }, { status: 400 })
     }
 
-    if (!correo.toLowerCase().endsWith("@sena.edu.co")) {
+    const email = correo.trim().toLowerCase();
+    if (!email.endsWith("@sena.edu.co")) {
       return NextResponse.json({ error: "El correo debe ser @sena.edu.co" }, { status: 400 })
     }
 
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
         ficha,
         instructor,
         aprendiz,
-        correo,
+        correo: email,
         salon,
         network,
         seHaCaido: Boolean(seHaCaido),

@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma"
 import { WifiOff, AlertTriangle, Users, Activity, List } from "lucide-react"
 import { SurveyCharts } from "@/components/admin/SurveyCharts"
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ date?: string }> }) {
   try {
     const session = await auth()

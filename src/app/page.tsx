@@ -41,8 +41,9 @@ export default function Home() {
       return
     }
 
-    if (!formData.correo.toLowerCase().endsWith('@sena.edu.co')) {
-      setErrorMsg('El correo debe tener el dominio @sena.edu.co')
+    const email = formData.correo.trim().toLowerCase();
+    if (!email.endsWith('@sena.edu.co')) {
+      setErrorMsg('El correo debe tener el dominio @sena.edu.co (sin espacios al final)')
       return
     }
 
