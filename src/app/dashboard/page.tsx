@@ -34,8 +34,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     
     const droppedCount = todayResponses.filter(r => r.seHaCaido).length
     const intermitenteCount = todayResponses.filter(r => r.intermitencia).length
-    const buenaCount = todayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Excelente').length
-    const sinNovedadCount = todayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Excelente') && !r.novedad).length
+    const buenaCount = todayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente').length
+    const sinNovedadCount = todayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad).length
 
     // Build weekly chart data (last 7 days)
     const chartData = []
@@ -51,14 +51,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         name: d.toLocaleDateString('es-CO', { weekday: 'short' }),
         caidas: dayResponses.filter(r => r.seHaCaido).length,
         intermitencia: dayResponses.filter(r => r.intermitencia).length,
-        buenas: dayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Excelente').length,
-        sinNovedad: dayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Excelente') && !r.novedad).length,
+        buenas: dayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente').length,
+        sinNovedad: dayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad).length,
         total: dayResponses.length
       })
     }
 
     // Group by salon to find the most intermittent ones (ONLY count those with failures)
-    const failedResponses = responses.filter(r => r.seHaCaido || r.intermitencia || r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Regular' || r.novedad);
+    const failedResponses = responses.filter(r => r.seHaCaido || r.intermitencia || r.calificacion === 'Malo' || r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Regular' || r.novedad);
     const salonGroups = failedResponses.reduce((acc: any, r: any) => {
       if (!acc[r.salon]) acc[r.salon] = 0;
       acc[r.salon]++;
