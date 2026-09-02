@@ -20,8 +20,10 @@ export function SurveyCharts({ data }: { data: any[] }) {
           <Legend />
           <Bar dataKey="sinNovedad" name="Sin Novedad (OK)" stackId="a" fill="#10B981" radius={[0, 0, 0, 0]} />
           <Bar dataKey="buenas" name="Buenas" stackId="a" fill="#22C55E" radius={[0, 0, 0, 0]} />
+          <Bar dataKey="regulares" name="Regulares" stackId="a" fill="#F97316" radius={[0, 0, 0, 0]} />
+          <Bar dataKey="malas" name="Malas" stackId="a" fill="#DC2626" radius={[0, 0, 0, 0]} />
           <Bar dataKey="intermitencia" name="Intermitencias" stackId="a" fill="#EAB308" radius={[0, 0, 0, 0]} />
-          <Bar dataKey="caidas" name="Caídas" stackId="a" fill="#EF4444" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="caidas" name="Caídas" stackId="a" fill="#991B1B" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
