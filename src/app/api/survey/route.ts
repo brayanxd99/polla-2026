@@ -12,9 +12,6 @@ export async function POST(req: Request) {
     }
 
     const email = correo.trim().toLowerCase();
-    if (!email.endsWith("@sena.edu.co")) {
-      return NextResponse.json({ error: "El correo debe ser @sena.edu.co" }, { status: 400 })
-    }
 
     const response = await prisma.surveyResponse.create({
       data: {

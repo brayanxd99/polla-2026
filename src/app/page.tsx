@@ -42,10 +42,6 @@ export default function Home() {
     }
 
     const email = formData.correo.trim().toLowerCase();
-    if (!email.endsWith('@sena.edu.co')) {
-      setErrorMsg('El correo debe tener el dominio @sena.edu.co (sin espacios al final)')
-      return
-    }
 
     setIsSubmitting(true)
     
@@ -156,12 +152,12 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Correo SENA (@sena.edu.co)</label>
+                <label className="text-sm font-medium text-gray-300">Correo</label>
                 <input 
                   required
                   type="email" 
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
-                  placeholder="ejemplo@sena.edu.co"
+                  placeholder="ejemplo@correo.com"
                   value={formData.correo}
                   onChange={e => setFormData({...formData, correo: e.target.value})}
                   onBlur={handleEmailBlur}
