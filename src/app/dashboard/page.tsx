@@ -39,6 +39,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const droppedCount = todayResponses.filter(r => r.seHaCaido).length
     const intermitenteCount = todayResponses.filter(r => r.intermitencia).length
     const buenaCount = todayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente').length
+    const regularCount = todayResponses.filter(r => r.calificacion === 'Regular').length
+    const malaCount = todayResponses.filter(r => r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Malo').length
     const sinNovedadCount = todayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad).length
 
     // Build weekly chart data (last 7 days)
@@ -56,6 +58,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         caidas: dayResponses.filter(r => r.seHaCaido).length,
         intermitencia: dayResponses.filter(r => r.intermitencia).length,
         buenas: dayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente').length,
+        regulares: dayResponses.filter(r => r.calificacion === 'Regular').length,
+        malas: dayResponses.filter(r => r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Malo').length,
         sinNovedad: dayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad).length,
         total: dayResponses.length
       })
@@ -97,20 +101,30 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
         {/* Stats Grid for Today */}
         <h2 className="text-xl font-bold text-white mt-8 mb-4">Resumen del Día Seleccionado</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
           <div className="glass rounded-2xl p-6 border border-white/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-blue-400"><Users className="w-12 h-12" /></div>
-            <p className="text-xs font-medium text-gray-400 mb-2">Total Reportes</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">Total</p>
             <p className="text-3xl font-bold text-white">{todayResponses.length}</p>
           </div>
           <div className="glass rounded-2xl p-6 border border-green-500/20 relative overflow-hidden group bg-gradient-to-br from-green-500/5 to-transparent">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-green-500"><Activity className="w-12 h-12" /></div>
-            <p className="text-xs font-medium text-gray-400 mb-2">Conexión Buena</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">Buena</p>
             <p className="text-3xl font-bold text-white">{buenaCount}</p>
+          </div>
+          <div className="glass rounded-2xl p-6 border border-orange-500/20 relative overflow-hidden group bg-gradient-to-br from-orange-500/5 to-transparent">
+            <div className="absolute top-0 right-0 p-4 opacity-20 text-orange-500"><Activity className="w-12 h-12" /></div>
+            <p className="text-xs font-medium text-gray-400 mb-2">Regular</p>
+            <p className="text-3xl font-bold text-white">{regularCount}</p>
+          </div>
+          <div className="glass rounded-2xl p-6 border border-red-500/20 relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent">
+            <div className="absolute top-0 right-0 p-4 opacity-20 text-red-500"><AlertTriangle className="w-12 h-12" /></div>
+            <p className="text-xs font-medium text-gray-400 mb-2">Mala</p>
+            <p className="text-3xl font-bold text-white">{malaCount}</p>
           </div>
           <div className="glass rounded-2xl p-6 border border-emerald-500/20 relative overflow-hidden group bg-gradient-to-br from-emerald-500/5 to-transparent">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-emerald-500"><Users className="w-12 h-12" /></div>
-            <p className="text-xs font-medium text-gray-400 mb-2">Sin Novedad (OK)</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">Sin Novedad</p>
             <p className="text-3xl font-bold text-white">{sinNovedadCount}</p>
           </div>
           <div className="glass rounded-2xl p-6 border border-yellow-500/20 relative overflow-hidden group bg-gradient-to-br from-yellow-500/5 to-transparent">
@@ -120,7 +134,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           </div>
           <div className="glass rounded-2xl p-6 border border-red-500/20 relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-red-500"><WifiOff className="w-12 h-12" /></div>
-            <p className="text-xs font-medium text-gray-400 mb-2">Caídas Totales</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">Caídas</p>
             <p className="text-3xl font-bold text-white">{droppedCount}</p>
           </div>
         </div>
