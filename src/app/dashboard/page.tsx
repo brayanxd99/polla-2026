@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { WifiOff, AlertTriangle, Users, Activity, List } from "lucide-react"
 import { SurveyCharts } from "@/components/admin/SurveyCharts"
+import { ExportExcelButton } from "@/components/admin/ExportExcelButton"
 
 export const dynamic = 'force-dynamic'
 
@@ -206,10 +207,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
         {/* Excel Table Section */}
         <div className="glass rounded-2xl border border-white/5 p-6 overflow-x-auto mt-8">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
-            <List className="w-5 h-5 text-blue-400" />
-            Tabla de Datos Completos
-          </h2>
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
+            <h2 className="text-xl font-bold flex items-center gap-2 text-white m-0">
+              <List className="w-5 h-5 text-blue-400" />
+              Tabla de Datos Completos
+            </h2>
+            <ExportExcelButton data={todayResponses} />
+          </div>
           <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-white/10 text-gray-300">
