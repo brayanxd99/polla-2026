@@ -227,7 +227,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               {todayResponses.map(r => (
                 <tr key={r.id} className="hover:bg-white/5 transition-colors text-sm text-gray-300 border-b border-white/5">
                   <td className="p-3 border border-white/5">
-                    {r.createdAt.toLocaleDateString('es-CO')} {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
+                    {r.createdAt.toLocaleDateString('es-CO')}
                   </td>
                   <td className="p-3 border border-white/5">{r.ficha}</td>
                   <td className="p-3 border border-white/5 font-bold text-yellow-400">{r.salon}</td>
