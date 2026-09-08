@@ -7,7 +7,7 @@ import { ExportExcelButton } from "@/components/admin/ExportExcelButton"
 
 export const dynamic = 'force-dynamic'
 
-export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ date?: string }> }) {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ startDate?: string, endDate?: string, salon?: string }> }) {
   try {
     const session = await auth()
     
@@ -21,20 +21,27 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const defaultDateStr = nowBogota.toISOString().split('T')[0]
     
     const params = await searchParams || {};
-    const targetDateStr = params.date || defaultDateStr; // e.g. '2026-09-01'
+    const targetStartDateStr = params.startDate || defaultDateStr;
+    const targetEndDateStr = params.endDate || defaultDateStr;
+    const salonFilter = params.salon || '';
     
     // Create UTC boundaries for the Bogota target date
-    // 00:00:00 Bogota = 05:00:00 UTC
-    // 23:59:59 Bogota = 04:59:59 UTC next day
-    const startDate = new Date(`${targetDateStr}T00:00:00.000-05:00`)
-    const endDate = new Date(`${targetDateStr}T23:59:59.999-05:00`)
+    const startDate = new Date(`${targetStartDateStr}T00:00:00.000-05:00`)
+    const endDate = new Date(`${targetEndDateStr}T23:59:59.999-05:00`)
 
     const responses = await prisma.surveyResponse.findMany({
       orderBy: { createdAt: 'desc' }
     })
+    
+    // Extract unique salones for the dropdown filter
+    const allSalones = [...new Set(responses.map(r => r.salon))].sort();
 
-    // Filter current day stats
-    const todayResponses = responses.filter(r => r.createdAt >= startDate && r.createdAt <= endDate)
+    // Filter by date range and optionally salon
+    const todayResponses = responses.filter(r => {
+      const matchDate = r.createdAt >= startDate && r.createdAt <= endDate;
+      const matchSalon = salonFilter ? r.salon === salonFilter : true;
+      return matchDate && matchSalon;
+    })
     
     const droppedCount = todayResponses.filter(r => r.seHaCaido).length
     const intermitenteCount = todayResponses.filter(r => r.intermitencia).length
@@ -85,22 +92,47 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <p className="text-gray-400">Panel administrativo de reportes de red.</p>
           </div>
           
-          {/* Simple Date Filter */}
-          <form className="flex items-center gap-2">
-            <input 
-              type="date" 
-              name="date"
-              defaultValue={targetDateStr}
-              className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            />
-            <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold transition-colors">
+          {/* Advanced Filters */}
+          <form className="flex flex-wrap items-end gap-3 bg-white/5 p-4 rounded-xl border border-white/10">
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Desde</label>
+              <input 
+                type="date" 
+                name="startDate"
+                defaultValue={targetStartDateStr}
+                className="bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Hasta</label>
+              <input 
+                type="date" 
+                name="endDate"
+                defaultValue={targetEndDateStr}
+                className="bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Salón</label>
+              <select 
+                name="salon" 
+                defaultValue={salonFilter}
+                className="bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              >
+                <option value="">Todos los salones</option>
+                {allSalones.map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-lg text-sm font-bold transition-colors">
               Filtrar
             </button>
           </form>
         </div>
 
         {/* Stats Grid for Today */}
-        <h2 className="text-xl font-bold text-white mt-8 mb-4">Resumen del Día Seleccionado</h2>
+        <h2 className="text-xl font-bold text-white mt-8 mb-4">Resumen de Selección</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
           <div className="glass rounded-2xl p-6 border border-white/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-20 text-blue-400"><Users className="w-12 h-12" /></div>
