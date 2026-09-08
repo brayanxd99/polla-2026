@@ -29,10 +29,34 @@ export function ExportExcelButton({ data }: { data: any[] }) {
       }
     });
 
-    // Create a new workbook and worksheet
-    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    // Generate Summary Data
+    const droppedCount = data.filter(r => r.seHaCaido).length;
+    const intermitenteCount = data.filter(r => r.intermitencia).length;
+    const buenaCount = data.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente').length;
+    const regularCount = data.filter(r => r.calificacion === 'Regular').length;
+    const malaCount = data.filter(r => r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Malo').length;
+    const sinNovedadCount = data.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad).length;
+
+    const summaryData = [
+      { 'Métrica': 'Total Encuestas', 'Cantidad': data.length },
+      { 'Métrica': 'Calidad: Buena', 'Cantidad': buenaCount },
+      { 'Métrica': 'Calidad: Regular', 'Cantidad': regularCount },
+      { 'Métrica': 'Calidad: Mala', 'Cantidad': malaCount },
+      { 'Métrica': 'Sin Novedad (OK)', 'Cantidad': sinNovedadCount },
+      { 'Métrica': 'Con Intermitencias', 'Cantidad': intermitenteCount },
+      { 'Métrica': 'Con Caídas', 'Cantidad': droppedCount }
+    ];
+
+    // Create a new workbook
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Reportes de Internet");
+
+    // Create Summary Worksheet
+    const summaryWorksheet = XLSX.utils.json_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(workbook, summaryWorksheet, "Resumen General");
+
+    // Create Data Worksheet
+    const dataWorksheet = XLSX.utils.json_to_sheet(formattedData);
+    XLSX.utils.book_append_sheet(workbook, dataWorksheet, "Datos Completos");
 
     // Generate Excel file and trigger download
     XLSX.writeFile(workbook, "Reporte_Internet_Horizonte.xlsx");
