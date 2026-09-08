@@ -25,7 +25,6 @@ export function ExportExcelButton({ data }: { data: any[] }) {
         'Red': r.network,
         'Instructor': r.instructor,
         'Aprendiz': r.aprendiz,
-        'Correo': r.correo,
         'Novedad / Detalles': novedadStr
       }
     });
