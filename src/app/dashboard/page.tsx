@@ -4,10 +4,11 @@ import { prisma } from "@/lib/prisma"
 import { WifiOff, AlertTriangle, Users, Activity, List } from "lucide-react"
 import { SurveyCharts } from "@/components/admin/SurveyCharts"
 import { ExportExcelButton } from "@/components/admin/ExportExcelButton"
+import Link from "next/link"
 
 export const dynamic = 'force-dynamic'
 
-export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ startDate?: string, endDate?: string, salon?: string }> }) {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ startDate?: string, endDate?: string, salon?: string, metric?: string }> }) {
   try {
     const session = await auth()
     
@@ -24,7 +25,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const targetStartDateStr = params.startDate || defaultDateStr;
     const targetEndDateStr = params.endDate || defaultDateStr;
     const salonFilter = params.salon || '';
+    const metricFilter = params.metric || '';
     
+    const buildUrl = (m: string) => `?startDate=${targetStartDateStr}&endDate=${targetEndDateStr}&salon=${salonFilter}&metric=${m}`;
     // Create UTC boundaries for the Bogota target date
     const startDate = new Date(`${targetStartDateStr}T00:00:00.000-05:00`)
     const endDate = new Date(`${targetEndDateStr}T23:59:59.999-05:00`)
@@ -49,6 +52,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const regularCount = todayResponses.filter(r => r.calificacion === 'Regular').length
     const malaCount = todayResponses.filter(r => r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Malo').length
     const sinNovedadCount = todayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad).length
+
+    let visibleResponses = todayResponses;
+    if (metricFilter === 'buena') visibleResponses = todayResponses.filter(r => r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente');
+    else if (metricFilter === 'regular') visibleResponses = todayResponses.filter(r => r.calificacion === 'Regular');
+    else if (metricFilter === 'mala') visibleResponses = todayResponses.filter(r => r.calificacion === 'Mala' || r.calificacion === 'Muy mala' || r.calificacion === 'Malo');
+    else if (metricFilter === 'sinnovedad') visibleResponses = todayResponses.filter(r => !r.seHaCaido && !r.intermitencia && (r.calificacion === 'Bueno' || r.calificacion === 'Buena' || r.calificacion === 'Excelente') && !r.novedad);
+    else if (metricFilter === 'intermitencias') visibleResponses = todayResponses.filter(r => r.intermitencia);
+    else if (metricFilter === 'caidas') visibleResponses = todayResponses.filter(r => r.seHaCaido);
 
     // Build weekly chart data (last 7 days)
     const chartData = []
@@ -125,6 +136,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 ))}
               </select>
             </div>
+            <input type="hidden" name="metric" value={metricFilter} />
             <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-lg text-sm font-bold transition-colors">
               Filtrar
             </button>
@@ -134,41 +146,41 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         {/* Stats Grid for Today */}
         <h2 className="text-xl font-bold text-white mt-8 mb-4">Resumen de Selección</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-          <div className="glass rounded-2xl p-6 border border-white/5 relative overflow-hidden group">
+          <Link href={buildUrl('')} className={`glass rounded-2xl p-6 border ${metricFilter === '' ? 'border-yellow-400 ring-2 ring-yellow-400' : 'border-white/5'} relative overflow-hidden group hover:border-yellow-400/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-blue-400"><Users className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Total</p>
             <p className="text-3xl font-bold text-white">{todayResponses.length}</p>
-          </div>
-          <div className="glass rounded-2xl p-6 border border-green-500/20 relative overflow-hidden group bg-gradient-to-br from-green-500/5 to-transparent">
+          </Link>
+          <Link href={buildUrl('buena')} className={`glass rounded-2xl p-6 border ${metricFilter === 'buena' ? 'border-green-500 ring-2 ring-green-500' : 'border-green-500/20'} relative overflow-hidden group bg-gradient-to-br from-green-500/5 to-transparent hover:border-green-500/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-green-500"><Activity className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Buena</p>
             <p className="text-3xl font-bold text-white">{buenaCount}</p>
-          </div>
-          <div className="glass rounded-2xl p-6 border border-orange-500/20 relative overflow-hidden group bg-gradient-to-br from-orange-500/5 to-transparent">
+          </Link>
+          <Link href={buildUrl('regular')} className={`glass rounded-2xl p-6 border ${metricFilter === 'regular' ? 'border-yellow-500 ring-2 ring-yellow-500' : 'border-orange-500/20'} relative overflow-hidden group bg-gradient-to-br from-orange-500/5 to-transparent hover:border-orange-500/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-orange-500"><Activity className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Regular</p>
             <p className="text-3xl font-bold text-white">{regularCount}</p>
-          </div>
-          <div className="glass rounded-2xl p-6 border border-red-500/20 relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent">
+          </Link>
+          <Link href={buildUrl('mala')} className={`glass rounded-2xl p-6 border ${metricFilter === 'mala' ? 'border-red-500 ring-2 ring-red-500' : 'border-red-500/20'} relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent hover:border-red-500/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-red-500"><AlertTriangle className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Mala</p>
             <p className="text-3xl font-bold text-white">{malaCount}</p>
-          </div>
-          <div className="glass rounded-2xl p-6 border border-emerald-500/20 relative overflow-hidden group bg-gradient-to-br from-emerald-500/5 to-transparent">
+          </Link>
+          <Link href={buildUrl('sinnovedad')} className={`glass rounded-2xl p-6 border ${metricFilter === 'sinnovedad' ? 'border-emerald-500 ring-2 ring-emerald-500' : 'border-emerald-500/20'} relative overflow-hidden group bg-gradient-to-br from-emerald-500/5 to-transparent hover:border-emerald-500/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-emerald-500"><Users className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Sin Novedad</p>
             <p className="text-3xl font-bold text-white">{sinNovedadCount}</p>
-          </div>
-          <div className="glass rounded-2xl p-6 border border-yellow-500/20 relative overflow-hidden group bg-gradient-to-br from-yellow-500/5 to-transparent">
+          </Link>
+          <Link href={buildUrl('intermitencias')} className={`glass rounded-2xl p-6 border ${metricFilter === 'intermitencias' ? 'border-yellow-500 ring-2 ring-yellow-500' : 'border-yellow-500/20'} relative overflow-hidden group bg-gradient-to-br from-yellow-500/5 to-transparent hover:border-yellow-500/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-yellow-500"><Activity className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Intermitencias</p>
             <p className="text-3xl font-bold text-white">{intermitenteCount}</p>
-          </div>
-          <div className="glass rounded-2xl p-6 border border-red-500/20 relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent">
+          </Link>
+          <Link href={buildUrl('caidas')} className={`glass rounded-2xl p-6 border ${metricFilter === 'caidas' ? 'border-red-500 ring-2 ring-red-500' : 'border-red-500/20'} relative overflow-hidden group bg-gradient-to-br from-red-500/5 to-transparent hover:border-red-500/50 transition-all cursor-pointer block`}>
             <div className="absolute top-0 right-0 p-4 opacity-20 text-red-500"><WifiOff className="w-12 h-12" /></div>
             <p className="text-xs font-medium text-gray-400 mb-2">Caídas</p>
             <p className="text-3xl font-bold text-white">{droppedCount}</p>
-          </div>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
@@ -215,10 +227,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               Últimos Reportes (Día)
             </h2>
             <div className="flex-1 overflow-y-auto space-y-3 pr-2">
-              {todayResponses.length === 0 ? (
+              {visibleResponses.length === 0 ? (
                 <div className="text-gray-500 text-sm text-center py-8">No hay reportes hoy.</div>
               ) : (
-                todayResponses.map(r => (
+                visibleResponses.map(r => (
                   <div key={r.id} className="bg-white/5 border border-white/5 rounded-xl p-4">
                     <div className="flex justify-between items-start mb-2">
                       <div>
@@ -258,7 +270,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               <List className="w-5 h-5 text-blue-400" />
               Tabla de Datos Completos
             </h2>
-            <ExportExcelButton data={todayResponses} />
+            <ExportExcelButton data={visibleResponses} />
           </div>
           <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
@@ -274,7 +286,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </tr>
             </thead>
             <tbody>
-              {todayResponses.map(r => (
+              {visibleResponses.map(r => (
                 <tr key={r.id} className="hover:bg-white/5 transition-colors text-sm text-gray-300 border-b border-white/5">
                   <td className="p-3 border border-white/5">
                     {r.createdAt.toLocaleDateString('es-CO')}
