@@ -236,7 +236,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                       <div>
                         <span className="font-bold text-yellow-400 text-sm">Salón: {r.salon}</span>
                         <p className="text-xs text-gray-400">Ficha: {r.ficha} | Inst: {r.instructor}</p>
-                        <p className="text-xs text-blue-400">Red: {r.network} | Correo: {r.correo}</p>
+                        <p className="text-xs text-blue-400">Red: {r.network}</p>
                       </div>
                       <span className="text-xs text-gray-500">
                         {r.createdAt.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
